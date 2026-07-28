@@ -42,6 +42,14 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body{
+/* html, body{
   overflow: hidden;
+} */
+
+body {
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
 }

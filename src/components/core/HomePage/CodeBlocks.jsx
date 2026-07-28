@@ -1,8 +1,7 @@
-import React from 'react'
-import CTAButton from "./Button"
-import HighlightText from './HighlightText'
-import { FaArrowRight } from "react-icons/fa"
-import { TypeAnimation } from 'react-type-animation'
+import React from "react";
+import CTAButton from "./Button";
+import { FaArrowRight } from "react-icons/fa";
+import { TypeAnimation } from "react-type-animation";
 
 const CodeBlocks = ({
   position,
@@ -11,63 +10,80 @@ const CodeBlocks = ({
   ctabtn1,
   ctabtn2,
   codeblock,
-  codeColor
+  codeColor,
 }) => {
   return (
-    <div className={`flex ${position} my-20 justify-between gap-10`}>
-
-      {/* LEFT SIDE */}
-      <div className='w-[50%] flex flex-col gap-8'>
+    <div
+      className={`flex flex-col ${position} w-full items-center justify-between gap-16 py-16`}
+    >
+      {/* LEFT SECTION */}
+      <div className="flex w-full flex-col gap-6 lg:w-[48%]">
         {heading}
 
-        <div className='text-richblack-300 font-bold'>
+        <p className="text-richblack-300 leading-7">
           {subheading}
-        </div>
+        </p>
 
-        <div className='flex gap-7 mt-7'>
-          <CTAButton active={ctabtn1.active} linkto={ctabtn1.linkto}>
-            <div className='flex gap-2 items-center'>
+        <div className="mt-2 flex gap-5">
+          <CTAButton
+            active={ctabtn1.active}
+            linkto={ctabtn1.linkto}
+          >
+            <div className="flex items-center gap-2">
               {ctabtn1.btnText}
               <FaArrowRight />
             </div>
           </CTAButton>
 
-          <CTAButton active={ctabtn2.active} linkto={ctabtn2.linkto}>
+          <CTAButton
+            active={ctabtn2.active}
+            linkto={ctabtn2.linkto}
+          >
             {ctabtn2.btnText}
           </CTAButton>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className='flex w-[50%] bg-black p-4 rounded-lg'>
+      {/* RIGHT SECTION */}
+      <div className="relative flex w-full justify-center items-center lg:w-[48%]">
 
-        {/* Line Numbers */}
-        <div className='text-center flex flex-col w-[10%] text-gray-400 font-mono'>
-          {Array.from({ length: 11 }, (_, i) => (
-            <p key={i}>{i + 1}</p>
-          ))}
+        {/* Glow Effect */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="h-80 w-80 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 opacity-40 blur-[120px]"></div>
         </div>
 
-        {/* Code */}
-        <div className={`w-[90%] font-mono ${codeColor}`}>
-          <TypeAnimation
-            sequence={[codeblock, 2000, ""]}
-            repeat={Infinity}
-            cursor={true}
-            style={{
-              whiteSpace: "pre-line",
-              display: "block",
-            }}
-            omitDeletionAnimation={true}
-          />
-        </div>
+        {/* Code Box */}
+        <div className="relative z-10 flex w-full max-w-[500px] rounded-xl border border-richblack-700 bg-richblack-800 shadow-2xl">
 
+          {/* Line Numbers */}
+          <div className="select-none border-r border-richblack-700 px-4 py-5 text-richblack-400 font-mono">
+            {Array.from({ length: 14 }, (_, index) => (
+              <p key={index}>{index + 1}</p>
+            ))}
+          </div>
+
+          {/* Animated Code */}
+          <div className="flex-1 p-5 font-mono text-sm">
+            <TypeAnimation
+              sequence={[codeblock, 3000]}
+              repeat={Infinity}
+              cursor={true}
+              omitDeletionAnimation={true}
+              style={{
+                whiteSpace: "pre-line",
+                display: "block",
+                color: "#FFD60A",
+                lineHeight: "1.7",
+              }}
+            />
+          </div>
+
+        </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default CodeBlocks 
+export default CodeBlocks;
 
-// this is new
+//...
