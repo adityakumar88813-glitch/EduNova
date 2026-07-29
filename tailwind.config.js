@@ -56,6 +56,7 @@ module.exports = {
           900: "#001B0D",
         },
 
+
         brown: {
           5: "#FFF4C4",
           25: "#FFE395",
@@ -73,6 +74,7 @@ module.exports = {
       },
     },
   },
+  
 
   plugins: [],
 };
