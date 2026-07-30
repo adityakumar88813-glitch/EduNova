@@ -1,10 +1,10 @@
 
 import React from 'react'
-import Logo1 from "../../../assets/logo1.jpeg"
-import Logo2 from "../../../assets/logo1.jpeg"
-import Logo3 from "../../../assets/logo1.jpeg"
-import Logo4 from "../../../assets/logo1.jpeg"
-import timelineimage from "../../../assets/timeline.jpg"
+import Logo1 from "../../../assets/LeadershipLogo.svg"
+import Logo2 from "../../../assets/responsbileLogo.svg"
+import Logo3 from "../../../assets/flexLogo.svg"
+import Logo4 from "../../../assets/sloveLogo.svg"
+import timelineimage from "../../../assets/TimelineImage.jpg"
 
 const timeline = [
     {
@@ -64,7 +64,7 @@ const TimelineSection = () => {
 
 <img src={timelineimage}
     alt='timelineImage'
-    className='w-[500px] h-[500px] shadow-white rounded-md'
+    className='w-[700px] h-[500px] shadow-white rounded-md mt-3'
 />
 
 
