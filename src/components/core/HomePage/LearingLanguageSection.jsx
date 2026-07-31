@@ -4,11 +4,12 @@ import Highlighttext from "../HomePage/HighlightText"
 import know_your_progress from "../../../assets/Know_your_progress.png"
 import compare_with_others from "../../../assets/Compare_with_others.svg"
 import plan_your_lesson from "../../../assets/Plan_your_lessons.svg"
+import CTAButton from "../HomePage/Button";
 
 const LearingLanguageSection = () => {
   return (
-    <div className='mt-[140px]'>
-  <div className='flex flex-col gap-5'>
+    <div className='mt-[140px] mb-32'>
+  <div className='flex flex-col gap-5 items-center'>
 
   <div className='text-semibold text-center text-5xl '>
     Your Swiss Knife for 
@@ -44,15 +45,24 @@ const LearingLanguageSection = () => {
   />
 </div>
 
+<div className='w-fit mb-20 mt-2'>
+  <CTAButton active={true} linkto={"/signup"}>
+  <div>
+    Learn More
+  </div>
+</CTAButton>
 
-
-
+</div>
 
   </div>
 
-
-
     </div>
+
+
+
+
+
+
   )
 }
 

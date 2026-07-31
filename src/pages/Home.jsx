@@ -7,8 +7,10 @@ import CTAButton from "../components/core/HomePage/Button";
 import CodeBlocks from "../components/core/HomePage/CodeBlocks";
 import LearingLanguageSection from "../components/core/HomePage/LearingLanguageSection";
 import TimelineSection from "../components/core/HomePage/TimelineSection";
-
+import InstructorSection from "../components/InstructorSection"
 import Banner from "../assets/Banner.mp4";
+import Footer from "../components/common/Footer"
+import ExploreMore from "../components/core/HomePage/ExploreMore"
 
 const Home = () => {
   return (
@@ -143,6 +145,16 @@ const Home = () => {
 
       </div>
 
+
+
+   <div className="relative z-10 translate-y-24">
+  <ExploreMore />
+</div>
+
+
+
+
+
     </div>
 
 
@@ -152,7 +164,7 @@ const Home = () => {
 
 {/* section 2 of home page white bg vala */}
 
-  <div className="bg-white text-richblack-700">
+  <div className="-mt-10 bg-white text-richblack-700">
   <div className="image_png h-[320px] ">
 
 
@@ -231,6 +243,17 @@ const Home = () => {
 
 </div>
 
+
+{/* section 3 */}
+<div className="flex flex-col gap-8 w-11/12 mx-auto max-w-maxContent items-center justify-between bg-richblack-900 text-white ">
+
+<InstructorSection/>
+
+<h2 className="text-center  text-4xl font-semibold mt-16">Review from Other Learners</h2>
+{/* reviewslider code  */}
+
+<Footer/>
+</div>
 
 
 
