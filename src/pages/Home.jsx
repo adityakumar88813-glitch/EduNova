@@ -12,6 +12,8 @@ import Banner from "../assets/Banner.mp4";
 import Footer from "../components/common/Footer"
 import ExploreMore from "../components/core/HomePage/ExploreMore"
 
+import Signup from "./Signup";
+
 const Home = () => {
   return (
     <div className="text-white">
@@ -255,10 +257,21 @@ const Home = () => {
 <Footer/>
 </div>
 
-
+  <div>
+   
+  </div>
 
 
       </div>
+
+
+
+
+
+  
+
+
+
 
   );
 };

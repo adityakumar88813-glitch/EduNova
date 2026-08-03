@@ -92,7 +92,7 @@ export const HomePageExplore = [
         ]
     },
     {
-        tag: 'career paths',
+        tag: 'Career paths',
         courses : [
             {
                 heading : "Next.js",
