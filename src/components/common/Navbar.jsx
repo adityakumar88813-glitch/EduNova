@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, matchPath } from 'react-router-dom'
 import logo from "../../assets/Logo-Full-Light.png"
 import{NavbarLinks} from "../../data/navbarlink"
@@ -8,15 +8,47 @@ import { useSelector } from 'react-redux'
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import Button from '../core/HomePage/Button'
 import ProfileDropDown from '../core/Auth/ProfileDropDown'
+import { categories } from '../../services/api'
+import { apiConnector } from '../../services/apiconnector'
+import { IoIosArrowDown } from "react-icons/io";
 
+const subLinks=[
+  {
+    title:"python",
+    link:"/catalog/python"
+  },
+   {
+    title:"web dev",
+    link:"/catalog/web-development"
+  },
+
+]
 
 const Navbar = () => {
-  const{token} = useSelector((state)=>state.auth);
-  const{user} = useSelector((state)=>state.profile);
-  const{totalItems} = useSelector((state)=>state.cart);
+  
+const{token} = useSelector((state)=>state.auth);
+const{user} = useSelector((state)=>state.profile);
+const{totalItems} = useSelector((state)=>state.cart);
+const location = useLocation();
 
-   
-    const location = useLocation();
+// const[subLinks , setSubLinks] = useState([]);
+
+// const fetchSubLinks =async()=>{
+//       try{
+//         const result =await apiConnector("GET",categories.CATEGORIES_API);
+//          setSubLinks(result.data.data);
+//       }catch(error){
+//             console.log("Could not fetch the category list")
+//       }
+//      }
+
+// useEffect(()=>{
+//     //  fetchSubLinks();
+// },[])
+
+
+
+
     const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
 }
@@ -37,11 +69,46 @@ const Navbar = () => {
         NavbarLinks.map((link, index) => (
            <li key={index}>
                 {
-                    link.title === "Catalog" ? (<div></div>) : (
+                    link.title === "Catalog" ? (
+                      <div className=' relative  flex items-center gap-1 group'>
+                           <p>{link.title}</p>
+                            <IoIosArrowDown />
+
+                                <div className='invisible absolute left-[50%] top-[50%] flex flex-col 
+                                    rounded-md bg-richblack-5 p-4 text-richblack-900 opacity-0
+                                     transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]
+                                      translate-x-[-50%] translate-y-[80%]'>
+
+                                      <div className='absolute left-[50%] top-0 h-5 w-6 rotate-45 rounded-md
+                                         bg-richblack-5 translate-y-[-40%] translate-x-[80%]'>
+                                      </div>
+
+                                    {
+  subLinks.length ? (
+    subLinks.map((subLink, index) => {
+      return (
+        <Link to={subLink.link} key={index}>
+          <p>{subLink.title}</p>
+        </Link>
+      );
+    })
+  ) : (
+    <div></div>
+  )
+}
+
+                </div>
+                               
+
+
+                      </div>
+
+                    ) : (
                        <Link to={link?.path}>
                            <p className={`${matchRoute(link?.path) ? "text-yellow-400" : "text-richblack-25"}`}>
                             {link.title}
                            </p>
+                          
                        </Link> 
                     )
                 }
