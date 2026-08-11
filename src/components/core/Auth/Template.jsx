@@ -2,8 +2,8 @@ import { FcGoogle } from "react-icons/fc"
 import { useSelector } from "react-redux"
 
 import frameImg from "../../../assets/frame.png"
-import LoginForm from "./LoginForm"
-import SignupForm from "./SingupForm.jsx"
+import LoginForm from "./LoginForm.jsx"
+import SignupForm from "./SignupForm.jsx"
 
 function Template({ title, description1, description2, image, formType }) {
   const { loading } = useSelector((state) => state.auth)

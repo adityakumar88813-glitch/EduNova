@@ -1,23 +1,27 @@
+import React from "react";
 
-// import React from 'react'
+const CourseDetails = () => {
+    const handleBuyCourse = () => {
+        const token = localStorage.getItem("token");
 
-// const CourseDetails = () =>{
-//     const handleBuyCourse = () =>{
-//         if(token){
-//             buyCourse()
-//             return;
-//         }
-//     }
-// }
+        if (token) {
+            console.log("Buying course...");
+            return;
+        }
 
-// const CourseDetails = () => {
-//   return (
-//     <div className='flex items-center'>
-//         <button className='bg-yellow-300 p-6 mt-10' onClick={()=>handleBuyCourse()}>
-//             Buy Now
-//         </button>
-//     </div>
-//   )
-// }
+        console.log("Please login first");
+    };
 
-// export default CourseDetails
+    return (
+        <div className="flex items-center">
+            <button
+                className="bg-yellow-300 p-6 mt-10"
+                onClick={handleBuyCourse}
+            >
+                Buy Now
+            </button>
+        </div>
+    );
+};
+
+export default CourseDetails;
