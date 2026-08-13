@@ -52,6 +52,11 @@ Category:{
     type:mongoose.Schema.Types.ObjectId,
     ref:Category,
 },
+createdAt: {
+    type:Date,
+    default:Date.now
+},
+
 studentsEnrolled:[{
     type:mongoose.Schema.Types.ObjectId,
       ref:"User",
