@@ -21,8 +21,9 @@ const VideoDetails = () => {
   const [videoData, setVideoData] = useState([]);
   const [videoEnded, setVideoEnded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [previewSource, setPreviewSource] = useState("")
+  const [previewSource, setPreviewSource] = useState("");
 
+//  kaun si viedo dikhani hai
   useEffect(()=> {
 
     const setVideoSpecificDetails = async() => {
@@ -37,7 +38,7 @@ const VideoDetails = () => {
             const filteredData = courseSectionData.filter(
                 (course) => course._id === sectionId
             )
-
+                // exject viedo ka data
             const filteredVideoData = filteredData?.[0].subSection.filter(
                 (data) => data._id === subSectionId
             )
@@ -52,6 +53,7 @@ const VideoDetails = () => {
 
   },[courseSectionData, courseEntireData, location.pathname])
 
+    // First viedo
   const isFirstVideo = () => {
     const currentSectionIndex = courseSectionData.findIndex(
         (data) => data._id === sectionId
@@ -68,6 +70,7 @@ const VideoDetails = () => {
     }
   } 
 
+    //  last viedo
   const isLastVideo = () => {
     const currentSectionIndex = courseSectionData.findIndex(
         (data) => data._id === sectionId
@@ -88,6 +91,8 @@ const VideoDetails = () => {
     }
   }
 
+
+//  NEXT viedo
   const goToNextVideo = () => {
     const currentSectionIndex = courseSectionData.findIndex(
         (data) => data._id === sectionId
@@ -109,13 +114,13 @@ const VideoDetails = () => {
         //different section ki first video
         const nextSectionId = courseSectionData[currentSectionIndex + 1]._id;
         const nextSubSectionId = courseSectionData[currentSectionIndex + 1].subSection[0]._id;
-        ///iss voide par jao 
+        ///iss viedo par jao 
         navigate(`/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`)
     }
   }
 
-  const goToPrevVideo = () => {
 
+  const goToPrevVideo = () => {
     const currentSectionIndex = courseSectionData.findIndex(
         (data) => data._id === sectionId
     )
@@ -155,6 +160,9 @@ const VideoDetails = () => {
     }
     setLoading(false);
   }
+
+
+  
   return (
     <div className="flex flex-col gap-5 text-white">
       {

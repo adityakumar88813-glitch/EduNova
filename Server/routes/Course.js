@@ -36,6 +36,12 @@ const {
   getAllRating,
 } = require("../controllers/RatingAndReview");
 
+//course progress
+const {
+  updateCourseProgress
+} = require("../controllers/courseProgress");
+
+
 // middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth");
 
@@ -56,6 +62,7 @@ router.post("/categoryPageDetails", categoryPageDetails);
 router.post("/addSection", auth, isInstructor, createSection);
 router.post("/updateSection", auth, isInstructor,updateSubSection );
 router.delete("/deleteSection", auth, isInstructor, deleteSection);
+router.post("/updateCourseProgress" , auth , isStudent, updateCourseProgress);
 
 
 //  SUBSECTION ROUTES 
