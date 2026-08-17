@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# EduNova 🎓
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+EduNova is a full-stack online learning platform where students can explore courses, enroll in them, and learn through an interactive platform.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+* 🔐 User Authentication & Authorization
+* 👨‍🎓 Student and Instructor functionality
+* 📚 Browse and explore courses
+* 🛒 Add courses to cart
+* 💳 Course payment integration
+* 🎥 Watch course videos
+* 📊 Track course progress
+* ⭐ Course ratings and reviews
+* 📧 Email/OTP verification
+* 📱 Responsive UI
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* React.js
+* Redux Toolkit
+* React Router
+* Tailwind CSS
+* Axios
+* React Hot Toast
 
-### `npm test`
+### Backend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
 
-### `npm run build`
+### Other Technologies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Cloudinary
+* Razorpay
+* Git & GitHub
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📂 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```text
+EduNova
+│
+├── frontend
+│   ├── src
+│   ├── public
+│   └── package.json
+│
+├── backend
+│   ├── controllers
+│   ├── models
+│   ├── routes
+│   ├── middleware
+│   └── package.json
+│
+└── README.md
+```
 
-### `npm run eject`
+## ⚙️ Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Clone the repository
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/adityakumar88813-glitch/study-notion.git
+cd study-notion
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Install Frontend Dependencies
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+cd frontend
+npm install
+```
 
-## Learn More
+### 3. Install Backend Dependencies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd ../backend
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 4. Configure Environment Variables
 
-### Code Splitting
+Create `.env` files for the frontend and backend and add the required environment variables.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Example:
 
-### Analyzing the Bundle Size
+```env
+MONGODB_URL=your_mongodb_url
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+RAZORPAY_KEY=your_razorpay_key
+RAZORPAY_SECRET=your_razorpay_secret
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 5. Run the Application
 
-### Making a Progressive Web App
+Start the backend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm run dev
+```
 
-### Advanced Configuration
+Start the frontend in another terminal:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm start
+```
 
-### Deployment
+## 🎯 Purpose
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+EduNova was built to provide a simple and interactive platform for online learning while giving instructors the ability to create and manage courses.
 
-### `npm run build` fails to minify
+## 👨‍💻 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Aditya Kumar**
+
+B.Tech Electrical Engineering
+NIT Silchar
+
+GitHub: [Aditya Kumar](https://github.com/adityakumar88813-glitch)
+
+## 📄 License
+
+This project is created for educational and learning purposes.
