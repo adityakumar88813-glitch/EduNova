@@ -11,7 +11,7 @@ import InstructorSection from "../components/InstructorSection"
 import Banner from "../assets/Banner.mp4";
 import Footer from "../components/common/Footer"
 import ExploreMore from "../components/core/HomePage/ExploreMore"
-
+import ReviewSlider from "../components/common/ReviewSlider"
 import Signup from "./Signup";
 
 const Home = () => {
@@ -253,6 +253,7 @@ const Home = () => {
 
 <h2 className="text-center  text-4xl font-semibold mt-16">Review from Other Learners</h2>
 {/* reviewslider code  */}
+<ReviewSlider/>
 
 <Footer/>
 </div>
