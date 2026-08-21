@@ -6,6 +6,8 @@ import { Pie } from "react-chartjs-2"
 Chart.register(...registerables)
 
 export default function InstructorChart({ courses }) {
+
+  
   // State to keep track of the currently selected chart
   const [currChart, setCurrChart] = useState("students")
 
