@@ -3,13 +3,12 @@ import ReactStars from "react-rating-stars-component"
 import Img from './Img';
 
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay, FreeMode, Pagination } from "swiper"
-import "swiper/css"
-import "swiper/css/free-mode"
-import "swiper/css/pagination"
-import "swiper/css/autoplay"
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 // Icons
 import { FaStar } from "react-icons/fa"
 

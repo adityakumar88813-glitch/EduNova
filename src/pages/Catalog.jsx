@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Footer from '../components/common/Footer'
 import { useParams } from 'react-router-dom'
 import { apiConnector } from '../services/apiconnector';
-import { categories } from '../services/api';
+import { categories } from '../services/apis';
 import { getCatalogPageData } from '../services/operations/pageAndComponentData';
 import Course_Card from '../components/core/Catalog/Course_Card';
 import CourseSlider from '../components/core/Catalog/CourseSlider';

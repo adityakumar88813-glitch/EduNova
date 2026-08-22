@@ -4,7 +4,7 @@ import { setLoading, setToken } from "../../slices/authSlice"
 import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
-import { endpoints } from "../api"
+import { endpoints } from "../apis"
 
 const {
   SENDOTP_API,
