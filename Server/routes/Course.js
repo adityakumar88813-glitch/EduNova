@@ -4,14 +4,14 @@ const router = express.Router();
 // controllers import
 const {
   createCourse ,
-  showAllcourses,
+  getAllCourses,
   getCourseDetails,
 } = require("../controllers/Course");
 
 // category controllers
 const {
   showAllCategories,
-  createCategories,
+createCategory,
   categoryPageDetails,
 } = require("../controllers/Category");
 
@@ -48,12 +48,12 @@ const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth"
 
 //COURSE ROUTES 
 router.post("/createCourse", auth, isInstructor, createCourse );
-router.get("/getAllCourses", showAllcourses);
+router.get("/getAllCourses", getAllCourses);
 router.get("/getCourseDetails", getCourseDetails);
 
 
 // CATEGORY ROUTES
-router.post("/createCategory", auth, isAdmin, createCategories);
+router.post("/createCategory", auth, isAdmin, createCategory);
 router.get("/showAllCategories", showAllCategories);
 router.post("/categoryPageDetails", categoryPageDetails);
 

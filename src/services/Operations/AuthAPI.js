@@ -1,4 +1,3 @@
-
 import { toast } from "react-hot-toast"
 import { setLoading, setToken } from "../../slices/authSlice"
 import { resetCart } from "../../slices/cartSlice"
@@ -14,7 +13,7 @@ const {
   RESETPASSWORD_API,
 } = endpoints
 
-export function sendOtp(email, navigate) {
+export function sendotp(email, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
