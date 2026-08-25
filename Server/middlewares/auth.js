@@ -1,107 +1,119 @@
-
 const jwt = require("jsonwebtoken");
-const user = require("../models/User");
 require("dotenv").config();
 
+// ================= AUTH =================
+exports.auth = async (req, res, next) => {
+  try {
+    // Extract token from Authorization header
+    const authHeader = req.header("Authorization");
 
-//auth
-exports.auth = async (req, res , next)=>{
-    try{
-        //extrcat token
-        const token =req.body.token || req.cookies.token || req.header("Authorisation").replace("Bearer","");
-        //token missing
-        if(!token){
-            return res.status(401).json({
-            success:false,
-            message:'Token is missing',
-            });
-        }
-
-        //verify Token by secreat
-        try{
-            const decode =  jwt.verify(token,process.env.JWT_SECRET);
-             console.log(decode);
-             req.user = decode;
-        }catch(error){
-             return res.status(401).json({
-            success:false,
-            message:'Token is invaild',
-            });
-        }
-        next();
-
-
-    }catch(error){
+    if (!authHeader) {
       return res.status(401).json({
-            success:false,
-            message:'Something went wrong while vaildating the token',
-            });
+        success: false,
+        message: "Token is missing",
+      });
     }
-}
 
-//isstdent
+    // Expected format: Bearer <token>
+    const token = authHeader.replace("Bearer ", "").trim();
 
-exports.isStudent  = async (req, res, next)=>{
-    try{
-         if(req.user.accountType !=="Stuent"){
-             return res.status(401).json({
-            success:false,
-            message:'This is procted routes for students ',
-            });
-         }
-         next();
-
-    }catch(error){
-         return res.status(401).json({
-            success:false,
-            message:'User role cannot be verified',
-            });
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Token is missing",
+      });
     }
-}
 
+    // Verify token
+    try {
+      const decode = jwt.verify(token, process.env.JWT_SECRET);
 
+      console.log("Decoded Token:", decode);
 
+      // Store decoded user information in request
+      req.user = decode;
+    } catch (error) {
+      console.log("JWT Verification Error:", error.message);
 
-
-//isInstructor
-
-exports.isInstructor = async (req, res, next)=>{
-    try{
-         if(req.user.accountType !=="Instructor"){
-             return res.status(401).json({
-            success:false,
-            message:'This is procted routes for Instructor ',
-            });
-         }
-         next();
-
-    }catch(error){
-         return res.status(401).json({
-            success:false,
-            message:'User role cannot be verified',
-            });
+      return res.status(401).json({
+        success: false,
+        message: "Token is invalid or expired",
+      });
     }
-}
+
+    next();
+  } catch (error) {
+    console.log("AUTH ERROR:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "Something went wrong while validating the token",
+    });
+  }
+};
 
 
-
-
-//isAdmin
-exports.isAdmin = async (req, res, next)=>{
-    try{
-         if(req.user.accountType !=="Admin"){
-             return res.status(401).json({
-            success:false,
-            message:'This is procted routes for Admin',
-            });
-         }
-         next();
-
-    }catch(error){
-         return res.status(401).json({
-            success:false,
-            message:'User role cannot be verified',
-            });
+// ================= STUDENT =================
+exports.isStudent = async (req, res, next) => {
+  try {
+    if (req.user.accountType !== "Student") {
+      return res.status(401).json({
+        success: false,
+        message: "This is a protected route for students",
+      });
     }
-}
 
+    next();
+  } catch (error) {
+    console.log("STUDENT AUTH ERROR:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "User role cannot be verified",
+    });
+  }
+};
+
+
+// ================= INSTRUCTOR =================
+exports.isInstructor = async (req, res, next) => {
+  try {
+    if (req.user.accountType !== "Instructor") {
+      return res.status(401).json({
+        success: false,
+        message: "This is a protected route for instructors",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.log("INSTRUCTOR AUTH ERROR:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "User role cannot be verified",
+    });
+  }
+};
+
+
+// ================= ADMIN =================
+exports.isAdmin = async (req, res, next) => {
+  try {
+    if (req.user.accountType !== "Admin") {
+      return res.status(401).json({
+        success: false,
+        message: "This is a protected route for admins",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.log("ADMIN AUTH ERROR:", error);
+
+    return res.status(401).json({
+      success: false,
+      message: "User role cannot be verified",
+    });
+  }
+};

@@ -94,24 +94,41 @@ export async function changePassword(token, formData) {
   toast.dismiss(toastId)
 }
 
+
 export function deleteProfile(token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
-    try {
-      const response = await apiConnector("DELETE", DELETE_PROFILE_API, null, {
-        Authorization: `Bearer ${token}`,
-      })
-      console.log("DELETE_PROFILE_API API RESPONSE............", response)
+    const toastId = toast.loading("Deleting Profile...");
 
-      if (!response.data.success) {
-        throw new Error(response.data.message)
+    try {
+      const response = await apiConnector(
+        "DELETE",
+        DELETE_PROFILE_API,
+        null,
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      console.log("DELETE PROFILE RESPONSE:", response);
+
+      if (!response?.data?.success) {
+        throw new Error(
+          response?.data?.message || "Could not delete profile"
+        );
       }
-      toast.success("Profile Deleted Successfully")
-      dispatch(logout(navigate))
+       console.log("TOKEN BEFORE DELETE:", token);
+      toast.success("Profile Deleted Successfully");
+
+      dispatch(logout(navigate));
     } catch (error) {
-      console.log("DELETE_PROFILE_API API ERROR............", error)
-      toast.error("Could Not Delete Profile")
+      console.log("DELETE PROFILE ERROR:", error);
+      console.log("BACKEND ERROR:", error?.response?.data);
+
+      toast.error(
+        error?.response?.data?.message || "Could Not Delete Profile"
+      );
     }
-    toast.dismiss(toastId)
-  }
+
+    toast.dismiss(toastId);
+  };
 }

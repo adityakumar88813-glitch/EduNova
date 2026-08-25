@@ -41,7 +41,7 @@ function VerifyEmail() {
         email,
         password,
         confirmPassword,
-        sendotp,
+        otp,
         navigate
       )
     );

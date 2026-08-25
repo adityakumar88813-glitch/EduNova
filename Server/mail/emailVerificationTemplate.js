@@ -58,9 +58,17 @@ const otpTemplate = (otp) => {
 <body>
   <div class="container">
 
-    <a href="https://studynotion-edtech-project.vercel.app">
-      <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo" />
-    </a>
+   <a
+  href="https://res.cloudinary.com/dnyovtdwv/image/upload/v1787636520/stocksnap-books-2596809_je5c46.jpg"
+  style="text-decoration:none;"
+>
+  <img
+    src="https://res.cloudinary.com/dnyovtdwv/image/upload/v1787636520/stocksnap-books-2596809_je5c46.jpg"
+    alt="EduNova Logo"
+    width="180"
+    style="display:block; width:180px; max-width:100%; height:auto; margin:0 auto 25px auto; border:0;"
+  />
+</a>
 
     <div class="message">
       OTP Verification Email
@@ -70,7 +78,7 @@ const otpTemplate = (otp) => {
       <p>Dear User,</p>
 
       <p>
-        Thank you for registering with StudyNotion. To complete your registration,
+        Thank you for registering with EduNova. To complete your registration,
         please use the following OTP (One-Time Password) to verify your account:
       </p>
 
@@ -89,7 +97,7 @@ const otpTemplate = (otp) => {
 
     <div class="support">
       If you have any questions, feel free to reach us at 
-      <a href="mailto:info@studynotion.com">info@studynotion.com</a>
+      <a href="mailto:info@EduNova.com">info@Edunova.com</a>
     </div>
 
   </div>

@@ -6,34 +6,76 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
-	try {
-		const { dateOfBirth = "", about = "", contactNumber } = req.body;
-		const id = req?.user.id;
+  try {
+    // Get data from request body
+    const {
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = "",
+    } = req.body;
 
-		// Find the profile by id
-		const userDetails = await User.findById(id);
-		const profile = await Profile.findById(userDetails?.additionalDetails);
+    // Get user ID from auth middleware
+    const id = req.user.id;
 
-		// Update the profile fields
-		profile.dateOfBirth = dateOfBirth;
-		profile.about = about;
-		profile.contactNumber = contactNumber;
+    // Find user
+    const userDetails = await User.findById(id);
 
-		// Save the updated profile
-		await profile?.save();
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-		return res.json({
-			success: true,
-			message: "Profile updated successfully",
-			profile,
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(500).json({
-			success: false,
-			error: error.message,
-		});
-	}
+    // Find user's additional profile
+    const profile = await Profile.findById(
+      userDetails.additionalDetails
+    );
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile details not found",
+      });
+    }
+
+    // Update profile details
+    profile.dateOfBirth = dateOfBirth;
+    profile.about = about;
+    profile.contactNumber = contactNumber;
+    profile.gender = gender;
+
+    // Save profile
+    await profile.save();
+
+    // Get updated user and populate additionalDetails
+    const updatedUserDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec();
+
+    if (!updatedUserDetails) {
+      return res.status(404).json({
+        success: false,
+        message: "Updated user not found",
+      });
+    }
+
+    // Send updated user to frontend
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      updatedUserDetails,
+    });
+  } catch (error) {
+    console.log("UPDATE PROFILE ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Could not update profile",
+      error: error.message,
+    });
+  }
 };
 
 exports.deleteAccount = async (req, res) => {
