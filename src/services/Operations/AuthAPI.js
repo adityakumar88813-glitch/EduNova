@@ -15,27 +15,39 @@ const {
 
 export function sendotp(email, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Checking email...")
     dispatch(setLoading(true))
+
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
         checkUserPresent: true,
       })
+
       console.log("SENDOTP API RESPONSE............", response)
 
-      console.log(response?.data?.success)
-
       if (!response?.data?.success) {
-        throw new Error(response?.data?.message)
+        throw new Error(
+          response?.data?.message || "Unable to send OTP"
+        )
       }
 
-      toast.success("OTP Sent Successfully")
+      toast.success(
+        response?.data?.message || "OTP Sent Successfully"
+      )
+
       navigate("/verify-email")
     } catch (error) {
       console.log("SENDOTP API ERROR............", error)
-      toast.error("Could Not Send OTP")
+
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Could Not Send OTP"
+
+      toast.error(message)
     }
+
     dispatch(setLoading(false))
     toast.dismiss(toastId)
   }
@@ -108,6 +120,7 @@ export function login(email, password, navigate) {
       localStorage.setItem("token", JSON.stringify(response?.data?.token))
       localStorage.setItem("user", JSON.stringify(response?.data?.user))
       navigate("/dashboard/my-profile")
+      
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
       toast.error("Login Failed")
@@ -118,6 +131,7 @@ export function login(email, password, navigate) {
 }
 
 export function logout(navigate) {
+    console.log("🔥 LOGOUT FUNCTION CALLED")
   return (dispatch) => {
     dispatch(setToken(null))
     dispatch(setUser(null))

@@ -1,6 +1,14 @@
 export default function GetAvgRating(ratingArr) {
-  // Make sure ratingArr is actually an array
-  if (!Array.isArray(ratingArr) || ratingArr.length === 0) {
+
+  console.log("RATING ARR:", ratingArr);
+  console.log("IS ARRAY:", Array.isArray(ratingArr));
+
+  if (!Array.isArray(ratingArr)) {
+    console.log("NOT AN ARRAY");
+    return 0;
+  }
+
+  if (ratingArr.length === 0) {
     return 0;
   }
 

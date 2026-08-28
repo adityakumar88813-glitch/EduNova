@@ -49,7 +49,7 @@ const About = () => {
               viewport={{ once: true, amount: 0.1 }}
               className="mx-auto mt-5 w-full text-sm leading-6 text-richblack-300 sm:text-base sm:leading-7 lg:w-[90%]"
             >
-              StudyNotion is at the forefront of driving innovation in online
+              EduNova is at the forefront of driving innovation in online
               education. We're passionate about creating a brighter future by
               offering cutting-edge courses, leveraging emerging technologies,
               and nurturing a vibrant learning community.

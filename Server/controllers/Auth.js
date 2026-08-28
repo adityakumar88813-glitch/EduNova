@@ -8,6 +8,7 @@ const { passwordUpdated } = require("../mail/passwordUpdate");
 const Profile = require("../models/Profile");
 require("dotenv").config();
 const emailTemplate = require("../mail/emailVerificationTemplate");
+const { auth } = require("../middlewares/auth");
 
 // Signup Controller for Registering USers
 
@@ -88,7 +89,7 @@ exports.signup = async (req, res) => {
 			dateOfBirth: null,
 			about: null,
 			contactNumber: null,
-		});
+		});auth
 
 		const user = await User.create({
 			firstName,
@@ -149,7 +150,7 @@ exports.login = async (req, res) => {
 				{ email: user.email, id: user._id, accountType: user.accountType },
 				process.env.JWT_SECRET,
 				{
-					expiresIn: "24h",
+					expiresIn: "7d",
 				}
 			);
 
@@ -193,7 +194,7 @@ exports.sendotp = async (req, res) => {
         const checkUserPresent = await User.findOne({ email });
 
         if (checkUserPresent) {
-            return res.status(401).json({
+            return res.status(409).json({
                 success: false,
                 message: "User is Already Registered",
             });

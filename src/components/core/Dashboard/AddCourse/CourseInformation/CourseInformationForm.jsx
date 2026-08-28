@@ -37,6 +37,11 @@ export default function CourseInformationForm() {
     const getCategories = async () => {
       setLoading(true)
       const categories = await fetchCourseCategories()
+      console.log("CATEGORIES RECEIVED IN FORM =>", categories)
+
+if (Array.isArray(categories)) {
+  setCourseCategories(categories)
+} 
       if (categories.length > 0) {
         // console.log("categories", categories)
         setCourseCategories(categories)
@@ -155,55 +160,140 @@ export default function CourseInformationForm() {
     }
     setLoading(false)
   }
+return (
+  <form
+    onSubmit={handleSubmit(onSubmit)}
+    className="
+      w-full space-y-7
+      rounded-2xl
+      border border-richblack-700
+      bg-richblack-800
+      p-4
+      shadow-xl shadow-black/10
+      sm:p-6
+      lg:p-8
+    "
+  >
+    {/* ================= HEADER ================= */}
+    <div className="border-b border-richblack-700 pb-6">
+      <div className="flex items-center gap-3">
+        <div className="h-2 w-2 rounded-full bg-yellow-50" />
 
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
-    >
-      {/* Course Title */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseTitle">
-          Course Title <sup className="text-pink-200">*</sup>
-        </label>
-        <input
-          id="courseTitle"
-          placeholder="Enter Course Title"
-          {...register("courseTitle", { required: true })}
-          className="form-style w-full"
-        />
-        {errors.courseTitle && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Course title is required
-          </span>
-        )}
+        <h2 className="text-xl font-semibold text-richblack-5 sm:text-2xl">
+          Course Information
+        </h2>
       </div>
-      {/* Course Short Description */}
+
+      <p className="mt-2 text-xs leading-5 text-richblack-400 sm:text-sm">
+        Provide the basic information about your course. This information
+        will be visible to students.
+      </p>
+    </div>
+
+    {/* ================= COURSE TITLE ================= */}
+    <div className="flex flex-col space-y-2">
+      <label
+        className="text-sm font-medium text-richblack-5"
+        htmlFor="courseTitle"
+      >
+        Course Title
+        <sup className="ml-1 text-pink-200">*</sup>
+      </label>
+
+      <input
+        id="courseTitle"
+        placeholder="e.g. Complete MERN Stack Development Course"
+        {...register("courseTitle", { required: true })}
+        className="
+          w-full rounded-xl
+          border border-richblack-600
+          bg-richblack-700
+          px-4 py-3
+          text-sm text-richblack-5
+          outline-none
+          transition-all duration-200
+          placeholder:text-richblack-400
+          focus:border-yellow-50/60
+          focus:bg-richblack-700
+          focus:ring-2
+          focus:ring-yellow-50/10
+        "
+      />
+
+      {errors.courseTitle && (
+        <span className="px-1 text-xs text-pink-200">
+          Course title is required
+        </span>
+      )}
+    </div>
+
+    {/* ================= SHORT DESCRIPTION ================= */}
+    <div className="flex flex-col space-y-2">
+      <label
+        className="text-sm font-medium text-richblack-5"
+        htmlFor="courseShortDesc"
+      >
+        Course Short Description
+        <sup className="ml-1 text-pink-200">*</sup>
+      </label>
+
+      <textarea
+        id="courseShortDesc"
+        placeholder="Write a short and attractive description of your course..."
+        {...register("courseShortDesc", { required: true })}
+        className="
+          min-h-[140px]
+          w-full
+          resize-none
+          rounded-xl
+          border border-richblack-600
+          bg-richblack-700
+          px-4 py-3
+          text-sm leading-6
+          text-richblack-5
+          outline-none
+          transition-all duration-200
+          placeholder:text-richblack-400
+          focus:border-yellow-50/60
+          focus:ring-2
+          focus:ring-yellow-50/10
+        "
+      />
+
+      {errors.courseShortDesc && (
+        <span className="px-1 text-xs text-pink-200">
+          Course description is required
+        </span>
+      )}
+    </div>
+
+    {/* ================= PRICE + CATEGORY ================= */}
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {/* PRICE */}
       <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
-          Course Short Description <sup className="text-pink-200">*</sup>
+        <label
+          className="text-sm font-medium text-richblack-5"
+          htmlFor="coursePrice"
+        >
+          Course Price
+          <sup className="ml-1 text-pink-200">*</sup>
         </label>
-        <textarea
-          id="courseShortDesc"
-          placeholder="Enter Description"
-          {...register("courseShortDesc", { required: true })}
-          className="form-style resize-x-none min-h-[130px] w-full"
-        />
-        {errors.courseShortDesc && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Course Description is required
-          </span>
-        )}
-      </div>
-      {/* Course Price */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="coursePrice">
-          Course Price <sup className="text-pink-200">*</sup>
-        </label>
+
         <div className="relative">
+          <HiOutlineCurrencyRupee
+            className="
+              absolute left-4 top-1/2
+              -translate-y-1/2
+              text-xl
+              text-richblack-400
+            "
+          />
+
           <input
             id="coursePrice"
-            placeholder="Enter Course Price"
+            type="number"
+            min="0"
+            placeholder="Enter course price"
             {...register("coursePrice", {
               required: true,
               valueAsNumber: true,
@@ -211,54 +301,104 @@ export default function CourseInformationForm() {
                 value: /^(0|[1-9]\d*)(\.\d+)?$/,
               },
             })}
-            className="form-style w-full !pl-12"
+            className="
+              w-full rounded-xl
+              border border-richblack-600
+              bg-richblack-700
+              py-3 pl-11 pr-4
+              text-sm text-richblack-5
+              outline-none
+              transition-all duration-200
+              placeholder:text-richblack-400
+              focus:border-yellow-50/60
+              focus:ring-2
+              focus:ring-yellow-50/10
+            "
           />
-          <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
         </div>
+
         {errors.coursePrice && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Course Price is required
+          <span className="px-1 text-xs text-pink-200">
+            Course price is required
           </span>
         )}
       </div>
-      {/* Course Category */}
+
+      {/* CATEGORY */}
       <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseCategory">
-          Course Category <sup className="text-pink-200">*</sup>
-        </label>
-        <select
-          {...register("courseCategory", { required: true })}
-          defaultValue=""
-          id="courseCategory"
-          className="form-style w-full"
+        <label
+          className="text-sm font-medium text-richblack-5"
+          htmlFor="courseCategory"
         >
+          Course Category
+          <sup className="ml-1 text-pink-200">*</sup>
+        </label>
+<select
+  {...register("courseCategory", {
+    required: true,
+  })}
+  defaultValue=""
+  id="courseCategory"
+  className="
+    w-full
+    cursor-pointer
+    appearance-none
+    rounded-xl
+    border border-richblack-600
+    bg-richblack-700
+    px-4 py-3
+    pr-10
+    text-sm
+    font-medium
+    text-richblack-5
+    outline-none
+    transition-all duration-200
+
+    hover:border-richblack-400
+
+    focus:border-yellow-50
+    focus:ring-2
+    focus:ring-yellow-50/20
+
+    [&>option]:bg-richblack-800
+    [&>option]:text-richblack-5
+  "
+>
           <option value="" disabled>
-            Choose a Category
+            Choose a category
           </option>
+
           {!loading &&
             courseCategories?.map((category, indx) => (
               <option key={indx} value={category?._id}>
-                {category?.name}
+                {category?.Name}
               </option>
             ))}
         </select>
+
         {errors.courseCategory && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Course Category is required
+          <span className="px-1 text-xs text-pink-200">
+            Course category is required
           </span>
         )}
       </div>
-      {/* Course Tags */}
+    </div>
+
+    {/* ================= TAGS ================= */}
+    <div className="rounded-xl border border-richblack-700 bg-richblack-900/30 p-4 sm:p-5">
       <ChipInput
         label="Tags"
         name="courseTags"
-        placeholder="Enter Tags and press Enter"
+        placeholder="Enter tags and press Enter"
         register={register}
         errors={errors}
         setValue={setValue}
         getValues={getValues}
       />
-      {/* Course Thumbnail Image */}
+    </div>
+
+    {/* ================= THUMBNAIL ================= */}
+    <div className="rounded-xl border border-richblack-700 bg-richblack-900/30 p-4 sm:p-5">
       <Upload
         name="courseImage"
         label="Course Thumbnail"
@@ -267,50 +407,107 @@ export default function CourseInformationForm() {
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
       />
-      {/* Benefits of the course */}
-      <div className="flex flex-col space-y-2">
-        <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
-          Benefits of the course <sup className="text-pink-200">*</sup>
-        </label>
-        <textarea
-          id="courseBenefits"
-          placeholder="Enter benefits of the course"
-          {...register("courseBenefits", { required: true })}
-          className="form-style resize-x-none min-h-[130px] w-full"
-        />
-        {errors.courseBenefits && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
-            Benefits of the course is required
-          </span>
-        )}
-      </div>
-      {/* Requirements/Instructions */}
+    </div>
+
+    {/* ================= BENEFITS ================= */}
+    <div className="flex flex-col space-y-2">
+      <label
+        className="text-sm font-medium text-richblack-5"
+        htmlFor="courseBenefits"
+      >
+        Benefits of the Course
+        <sup className="ml-1 text-pink-200">*</sup>
+      </label>
+
+      <textarea
+        id="courseBenefits"
+        placeholder="What will students learn or achieve from this course?"
+        {...register("courseBenefits", { required: true })}
+        className="
+          min-h-[140px]
+          w-full
+          resize-none
+          rounded-xl
+          border border-richblack-600
+          bg-richblack-700
+          px-4 py-3
+          text-sm leading-6
+          text-richblack-5
+          outline-none
+          transition-all duration-200
+          placeholder:text-richblack-400
+          focus:border-yellow-50/60
+          focus:ring-2
+          focus:ring-yellow-50/10
+        "
+      />
+
+      {errors.courseBenefits && (
+        <span className="px-1 text-xs text-pink-200">
+          Benefits of the course is required
+        </span>
+      )}
+    </div>
+
+    {/* ================= REQUIREMENTS ================= */}
+    <div className="rounded-xl border border-richblack-700 bg-richblack-900/30 p-4 sm:p-5">
       <RequirementsField
         name="courseRequirements"
-        label="Requirements/Instructions"
+        label="Requirements / Instructions"
         register={register}
         setValue={setValue}
         errors={errors}
         getValues={getValues}
       />
-      {/* Next Button */}
-      <div className="flex justify-end gap-x-2">
-        {editCourse && (
-          <button
-            onClick={() => dispatch(setStep(2))}
-            disabled={loading}
-            className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
-          >
-            Continue Wihout Saving
-          </button>
-        )}
+    </div>
+
+    {/* ================= ACTION BUTTONS ================= */}
+    <div
+      className="
+        flex flex-col-reverse
+        gap-3
+        border-t border-richblack-700
+        pt-6
+        sm:flex-row
+        sm:justify-end
+      "
+    >
+      {editCourse && (
+        <button
+          type="button"
+          onClick={() => dispatch(setStep(2))}
+          disabled={loading}
+          className="
+            flex w-full
+            cursor-pointer
+            items-center justify-center
+            rounded-xl
+            border border-richblack-500
+            bg-richblack-700
+            px-5 py-3
+            text-sm font-semibold
+            text-richblack-100
+            transition-all duration-200
+            hover:border-richblack-400
+            hover:bg-richblack-600
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+            sm:w-auto
+          "
+        >
+          Continue Without Saving
+        </button>
+      )}
+
+      <div className="w-full sm:w-auto">
         <IconBtn
           disabled={loading}
           text={!editCourse ? "Next" : "Save Changes"}
         >
-          <MdNavigateNext />
+          <MdNavigateNext className="text-xl" />
         </IconBtn>
       </div>
-    </form>
-  )
+    </div>
+  </form>
+)
 }

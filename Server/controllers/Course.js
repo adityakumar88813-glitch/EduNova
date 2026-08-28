@@ -136,6 +136,7 @@ exports.editCourse = async (req, res) => {
   try {
     const { courseId } = req.body
     const updates = req.body
+    delete updates.courseId
     const course = await Course.findById(courseId)
 
     if (!course) {
@@ -143,15 +144,18 @@ exports.editCourse = async (req, res) => {
     }
 
     // If Thumbnail Image is found, update it
-    if (req.files) {
-      console.log("thumbnail update")
-      const thumbnail = req.files.thumbnailImage
-      const thumbnailImage = await uploadImageToCloudinary(
-        thumbnail,
-        process.env.FOLDER_NAME
-      )
-      course.thumbnail = thumbnailImage.secure_url
-    }
+   if (req.files && req.files.thumbnailImage) {
+  console.log("thumbnail update")
+
+  const thumbnail = req.files.thumbnailImage
+
+  const thumbnailImage = await uploadImageToCloudinary(
+    thumbnail,
+    process.env.FOLDER_NAME
+  )
+
+  course.thumbnail = thumbnailImage.secure_url
+}
 
     // Update only the fields that are present in the request body
     for (const key in updates) {

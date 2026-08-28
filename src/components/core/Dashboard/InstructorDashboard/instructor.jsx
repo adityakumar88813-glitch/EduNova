@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { fetchInstructorCourses } from '../../../../services/operations/courseDetailsAPI';
-import { getInstructorData } from '../../../../services/operations/profileAPI';
+import {getInstructorData} from '../../../../services/operations/profileAPI'
 import InstructorChart from './InstructorChart';
 import { Link } from 'react-router-dom';
 
@@ -62,7 +62,6 @@ export default function Instructor() {
                   </p>
                 </div>
               )}
-
               {/* Total Statistics */}
               <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
                 <p className="text-lg font-bold text-richblack-5">Statistics</p>
@@ -89,8 +88,6 @@ export default function Instructor() {
               </div>
             </div>
             <div className="rounded-md bg-richblack-800 p-6">
-
-            
               {/* Render 3 courses */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-bold text-richblack-5">Your Courses</p>

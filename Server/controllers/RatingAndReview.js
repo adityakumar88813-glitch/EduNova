@@ -89,7 +89,7 @@ exports.createRating = async (req, res) => {
 // ======================================================
 exports.getAverageRating = async (req, res) => {
   try {
-    const { courseId } = req.body;
+    const { courseId } = req.query;
 
     if (!courseId) {
       return res.status(400).json({
@@ -114,7 +114,6 @@ exports.getAverageRating = async (req, res) => {
       },
     ]);
 
-    // If ratings exist
     if (result.length > 0) {
       return res.status(200).json({
         success: true,
@@ -122,7 +121,6 @@ exports.getAverageRating = async (req, res) => {
       });
     }
 
-    // If no ratings exist
     return res.status(200).json({
       success: true,
       averageRating: 0,

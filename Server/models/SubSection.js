@@ -19,7 +19,7 @@ const subSectionSchema = new mongoose.Schema({
 
     },
     description:{
-        type:Number,
+        type:String,
        
 
     }
