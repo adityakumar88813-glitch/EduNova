@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { RxCross2 } from "react-icons/rx"
+import { FiStar, FiSend } from "react-icons/fi"
 import ReactStars from "react-rating-stars-component"
 import { useSelector } from "react-redux"
 
@@ -10,27 +11,48 @@ import IconBtn from "../../common/IconBtn"
 export default function CourseReviewModal({ setReviewModal }) {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
-  const { courseEntireData } = useSelector((state) => state.viewCourse)
+  const { courseEntireData } = useSelector(
+    (state) => state.viewCourse
+  )
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm()
+
+  const courseRating = watch("courseRating")
+
+  // =========================================================
+  // INITIAL VALUES
+  // =========================================================
 
   useEffect(() => {
     setValue("courseExperience", "")
     setValue("courseRating", 0)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setValue])
+
+  // =========================================================
+  // RATING
+  // =========================================================
 
   const ratingChanged = (newRating) => {
-    // console.log(newRating)
-    setValue("courseRating", newRating)
+    setValue("courseRating", newRating, {
+      shouldValidate: true,
+    })
   }
 
+  // =========================================================
+  // SUBMIT
+  // =========================================================
+
   const onSubmit = async (data) => {
+    if (!courseEntireData?._id) {
+      return
+    }
+
     await createRating(
       {
         courseId: courseEntireData._id,
@@ -39,76 +61,322 @@ export default function CourseReviewModal({ setReviewModal }) {
       },
       token
     )
+
     setReviewModal(false)
   }
 
   return (
-    <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
-      <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
-        {/* Modal Header */}
-        <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
-          <p className="text-xl font-semibold text-richblack-5">Add Review</p>
-          <button onClick={() => setReviewModal(false)}>
-            <RxCross2 className="text-2xl text-richblack-5" />
+    <div
+      className="
+        fixed inset-0 z-[1000]
+        flex min-h-screen items-center justify-center
+        overflow-y-auto
+        bg-black/60
+        px-4 py-8
+        backdrop-blur-md
+      "
+      onClick={() => setReviewModal(false)}
+    >
+
+      {/* =====================================================
+          MODAL
+      ===================================================== */}
+
+      <div
+        className="
+          relative
+          w-full max-w-[560px]
+          overflow-hidden
+          rounded-2xl
+          border border-richblack-600
+          bg-richblack-800
+          shadow-[0_25px_80px_rgba(0,0,0,0.5)]
+        "
+        onClick={(e) => e.stopPropagation()}
+      >
+
+        {/* =================================================
+            TOP ACCENT
+        ================================================= */}
+
+        <div className="h-1 w-full bg-gradient-to-r from-yellow-50 via-yellow-100 to-yellow-50" />
+
+        {/* =================================================
+            HEADER
+        ================================================= */}
+
+        <div className="flex items-center justify-between border-b border-richblack-600 bg-richblack-800 px-6 py-5">
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-yellow-50">
+              Course Feedback
+            </p>
+
+            <h2 className="mt-1 text-xl font-bold text-richblack-5">
+              Add Review
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setReviewModal(false)}
+            className="
+              flex h-9 w-9
+              items-center justify-center
+              rounded-lg
+              border border-richblack-600
+              bg-richblack-700
+              text-richblack-300
+              transition-all duration-200
+              hover:border-pink-300/40
+              hover:bg-pink-300/10
+              hover:text-pink-200
+            "
+            aria-label="Close review modal"
+          >
+            <RxCross2 className="text-xl" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-6">
-          <div className="flex items-center justify-center gap-x-4">
+        {/* =================================================
+            BODY
+        ================================================= */}
+
+        <div className="px-6 py-7">
+
+          {/* =================================================
+              USER PROFILE
+          ================================================= */}
+
+          <div className="
+            flex items-center gap-4
+            rounded-xl
+            border border-richblack-600
+            bg-richblack-900/50
+            p-4
+          ">
+
             <img
               src={user?.image}
-              alt={user?.firstName + "profile"}
-              className="aspect-square w-[50px] rounded-full object-cover"
+              alt={`${user?.firstName || "User"} profile`}
+              className="
+                h-12 w-12
+                rounded-full
+                border-2 border-richblack-500
+                object-cover
+              "
             />
-            <div className="">
-              <p className="font-semibold text-richblack-5">
+
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-richblack-5">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-sm text-richblack-5">Posting Publicly</p>
+
+              <p className="mt-0.5 text-xs text-richblack-400">
+                Your review will be posted publicly
+              </p>
             </div>
           </div>
-          
+
+          {/* =================================================
+              FORM
+          ================================================= */}
+
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-6 flex flex-col items-center"
+            className="mt-7"
           >
-            <ReactStars
-              count={5}
-              onChange={ratingChanged}
-              size={24}
-              activeColor="#ffd700"
-            />
-            <div className="flex w-11/12 flex-col space-y-2">
-              <label
-                className="text-sm text-richblack-5"
-                htmlFor="courseExperience"
-              >
-                Add Your Experience <sup className="text-pink-200">*</sup>
-              </label>
-              <textarea
-                id="courseExperience"
-                placeholder="Add Your Experience"
-                {...register("courseExperience", { required: true })}
-                className="form-style resize-x-none min-h-[130px] w-full"
+
+            {/* =================================================
+                RATING
+            ================================================= */}
+
+            <div className="
+              rounded-xl
+              border border-richblack-600
+              bg-richblack-900/40
+              p-5
+            ">
+
+              <div className="flex items-center gap-2">
+                <FiStar className="text-yellow-50" />
+
+                <p className="text-sm font-semibold text-richblack-5">
+                  How would you rate this course?
+                </p>
+              </div>
+
+              <div className="mt-4 flex flex-col items-center">
+
+                <ReactStars
+                  count={5}
+                  value={courseRating || 0}
+                  onChange={ratingChanged}
+                  size={34}
+                  activeColor="#ffd700"
+                  color="#4b5563"
+                  isHalf={false}
+                />
+
+                <p className="mt-2 text-xs text-richblack-400">
+                  {courseRating
+                    ? `${courseRating} out of 5 stars`
+                    : "Select your rating"}
+                </p>
+              </div>
+
+              {/* Hidden rating validation */}
+              <input
+                type="hidden"
+                {...register("courseRating", {
+                  validate: (value) =>
+                    Number(value) > 0 ||
+                    "Please select a rating",
+                })}
               />
-              {errors.courseExperience && (
-                <span className="ml-2 text-xs tracking-wide text-pink-200">
-                  Please Add Your Experience
-                </span>
+
+              {errors.courseRating && (
+                <p className="mt-2 text-center text-xs text-pink-200">
+                  {errors.courseRating.message}
+                </p>
               )}
             </div>
-            <div className="mt-6 flex w-11/12 justify-end gap-x-2">
+
+            {/* =================================================
+                EXPERIENCE
+            ================================================= */}
+
+            <div className="mt-5">
+
+              <label
+                htmlFor="courseExperience"
+                className="
+                  mb-2 block
+                  text-sm font-semibold
+                  text-richblack-5
+                "
+              >
+                Share your experience
+                <sup className="ml-1 text-pink-200">
+                  *
+                </sup>
+              </label>
+
+              <textarea
+                id="courseExperience"
+                placeholder="What did you like about this course? What could be improved?"
+                {...register("courseExperience", {
+                  required: "Please add your experience",
+                  minLength: {
+                    value: 5,
+                    message:
+                      "Review must contain at least 5 characters",
+                  },
+                })}
+                className="
+                  min-h-[140px]
+                  w-full
+                  resize-none
+                  rounded-xl
+                  border border-richblack-600
+                  bg-richblack-900
+                  px-4 py-3
+                  text-sm
+                  leading-6
+                  text-richblack-5
+                  outline-none
+                  placeholder:text-richblack-500
+                  transition-all duration-200
+                  focus:border-yellow-50
+                  focus:ring-1
+                  focus:ring-yellow-50/30
+                "
+              />
+
+              {errors.courseExperience && (
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-pink-200" />
+
+                  <span className="text-xs text-pink-200">
+                    {errors.courseExperience.message}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* =================================================
+                BUTTONS
+            ================================================= */}
+
+            <div className="
+              mt-7
+              flex
+              flex-col-reverse
+              gap-3
+              sm:flex-row
+              sm:justify-end
+            ">
+
+              {/* Cancel */}
               <button
+                type="button"
                 onClick={() => setReviewModal(false)}
-                className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  rounded-xl
+                  border border-richblack-600
+                  bg-richblack-700
+                  px-5 py-2.5
+                  text-sm font-semibold
+                  text-richblack-200
+                  transition-all duration-200
+                  hover:border-richblack-500
+                  hover:bg-richblack-600
+                  hover:text-white
+                "
               >
                 Cancel
               </button>
-              <IconBtn text="Save" />
+
+              {/* Save */}
+              <IconBtn
+                text="Save Review"
+                customClasses="
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-xl
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-semibold
+                "
+              />
             </div>
+
           </form>
         </div>
+
+        {/* =================================================
+            FOOTER
+        ================================================= */}
+
+        <div className="
+          flex items-center justify-center
+          gap-2
+          border-t border-richblack-700
+          bg-richblack-900/40
+          px-6 py-3
+          text-[10px]
+          text-richblack-500
+        ">
+          <FiSend />
+          Your feedback helps other students choose better courses
+        </div>
+
       </div>
     </div>
   )

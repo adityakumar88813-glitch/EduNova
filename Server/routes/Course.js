@@ -13,6 +13,7 @@ const {
   getInstructorCourses,
   deleteCourse,
   editCourse,
+  getFullCourseDetails,
 } = require("../controllers/Course");
 
 // Category controllers
@@ -88,6 +89,13 @@ router.post(
 router.get(
   "/getCourseDetails",
   getCourseDetails
+);
+
+// Get Full Course Details
+router.post(
+  "/getFullCourseDetails",
+  auth,
+  getFullCourseDetails
 );
 
 // Get Instructor Courses

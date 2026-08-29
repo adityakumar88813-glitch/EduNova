@@ -1,13 +1,25 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { HiUsers } from "react-icons/hi";
 import { ImTree } from "react-icons/im";
 
 const CourseCard = ({ cardData, currentCard, setCurrentCard }) => {
+  const navigate = useNavigate();
+
   const isActive = currentCard === cardData.heading;
+
+  const handleClick = () => {
+    setCurrentCard(cardData.heading);
+
+    // Agar courseId available hai
+    if (cardData?._id) {
+      navigate(`/courses/${cardData._id}`);
+    }
+  };
 
   return (
     <div
-      onClick={() => setCurrentCard(cardData.heading)}
+      onClick={handleClick}
       className={`w-[360px] h-[300px] cursor-pointer transition-all duration-300
       ${
         isActive
@@ -16,7 +28,6 @@ const CourseCard = ({ cardData, currentCard, setCurrentCard }) => {
       }`}
     >
       {/* Upper Part */}
-
       <div
         className={`h-[80%] p-6 border-b-2 border-dashed flex flex-col justify-between
         ${
@@ -45,7 +56,6 @@ const CourseCard = ({ cardData, currentCard, setCurrentCard }) => {
       </div>
 
       {/* Bottom */}
-
       <div
         className={`h-[20%] px-6 flex justify-between items-center text-sm font-medium
         ${

@@ -46,13 +46,20 @@ price:{
 thumbnail:{
     type:String,
 },
+videoUrl: {
+    type: String,
+},
+
+videoDuration: {
+    type: Number,
+},
 tag:{
     type:[String],
      required:true,
 },
-Category:{
+category:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:Category,
+    ref:"Category",
 },
 createdAt: {
     type:Date,
