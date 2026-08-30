@@ -86,7 +86,7 @@ router.post(
 );
 
 // Get Course Details
-router.get(
+router.post(
   "/getCourseDetails",
   getCourseDetails
 );

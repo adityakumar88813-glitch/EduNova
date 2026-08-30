@@ -1,6 +1,5 @@
 const Category = require("../models/Category");
 
-
 // =====================================================
 // CREATE CATEGORY
 // =====================================================
@@ -29,7 +28,6 @@ exports.createCategory = async (req, res) => {
       message: "Category created successfully",
       data: categoryDetails,
     });
-
   } catch (error) {
     console.error("CREATE CATEGORY ERROR:", error);
 
@@ -40,14 +38,12 @@ exports.createCategory = async (req, res) => {
   }
 };
 
-
 // =====================================================
 // SHOW ALL CATEGORIES
 // =====================================================
 
 exports.showAllCategories = async (req, res) => {
   try {
-
     console.log("INSIDE SHOW ALL CATEGORIES");
 
     const allCategories = await Category.find({});
@@ -56,9 +52,7 @@ exports.showAllCategories = async (req, res) => {
       success: true,
       data: allCategories,
     });
-
   } catch (error) {
-
     console.error("SHOW ALL CATEGORIES ERROR:", error);
 
     return res.status(500).json({
@@ -68,7 +62,6 @@ exports.showAllCategories = async (req, res) => {
   }
 };
 
-
 // =====================================================
 // CATEGORY PAGE DETAILS
 // =====================================================
@@ -77,11 +70,8 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-
 exports.categoryPageDetails = async (req, res) => {
-
   try {
-
     const { categoryId } = req.body;
 
     console.log("====================================");
@@ -89,20 +79,16 @@ exports.categoryPageDetails = async (req, res) => {
     console.log("CATEGORY ID:", categoryId);
     console.log("====================================");
 
-
     // -------------------------------------------------
     // 1. Check categoryId
     // -------------------------------------------------
 
     if (!categoryId) {
-
       return res.status(400).json({
         success: false,
         message: "Category ID is required",
       });
-
     }
-
 
     // -------------------------------------------------
     // 2. Get selected category
@@ -114,71 +100,91 @@ exports.categoryPageDetails = async (req, res) => {
         match: {
           status: "Published",
         },
-        populate: {
-          path: "ratingAndReviews",
-        },
+        populate: [
+          {
+            path: "ratingAndReviews",
+          },
+          {
+            path: "instructor",
+          },
+        ],
       })
       .exec();
 
-
-    console.log("SELECTED CATEGORY:", selectedCategory);
-
+    console.log(
+      "SELECTED CATEGORY:",
+      selectedCategory
+    );
 
     // -------------------------------------------------
     // 3. Category not found
     // -------------------------------------------------
 
     if (!selectedCategory) {
-
       return res.status(404).json({
         success: false,
         message: "Category not found",
       });
-
     }
-
 
     // -------------------------------------------------
     // 4. Get other categories
+    //    ONLY categories having Published courses
     // -------------------------------------------------
 
     const categoriesExceptSelected = await Category.find({
       _id: {
         $ne: categoryId,
       },
-    });
+    })
+      .populate({
+        path: "course",
+        match: {
+          status: "Published",
+        },
+        populate: [
+          {
+            path: "ratingAndReviews",
+          },
+          {
+            path: "instructor",
+          },
+        ],
+      })
+      .exec();
 
+    // -------------------------------------------------
+    // 5. Remove categories having no Published courses
+    // -------------------------------------------------
+
+    const validCategories = categoriesExceptSelected.filter(
+      (category) =>
+        category.course &&
+        category.course.length > 0
+    );
 
     let differentCategory = null;
 
+    // -------------------------------------------------
+    // 6. Select random valid category
+    // -------------------------------------------------
 
-    if (categoriesExceptSelected.length > 0) {
-
+    if (validCategories.length > 0) {
       const randomIndex = getRandomInt(
-        categoriesExceptSelected.length
+        validCategories.length
       );
 
-
-      const randomCategory =
-        categoriesExceptSelected[randomIndex];
-
-
-      differentCategory = await Category.findById(
-        randomCategory._id
-      )
-        .populate({
-          path: "course",
-          match: {
-            status: "Published",
-          },
-        })
-        .exec();
-
+      differentCategory =
+        validCategories[randomIndex];
     }
 
+    console.log(
+      "DIFFERENT CATEGORY:",
+      differentCategory
+    );
 
     // -------------------------------------------------
-    // 5. Get courses from all categories
+    // 7. Get courses from all categories
     // -------------------------------------------------
 
     const allCategories = await Category.find({})
@@ -187,24 +193,27 @@ exports.categoryPageDetails = async (req, res) => {
         match: {
           status: "Published",
         },
-        populate: {
-          path: "instructor",
-        },
+        populate: [
+          {
+            path: "instructor",
+          },
+          {
+            path: "ratingAndReviews",
+          },
+        ],
       })
       .exec();
 
-
     // -------------------------------------------------
-    // 6. Combine all courses
+    // 8. Combine all courses
     // -------------------------------------------------
 
     const allCourses = allCategories.flatMap(
       (category) => category.course || []
     );
 
-
     // -------------------------------------------------
-    // 7. Sort by sold
+    // 9. Sort by sold
     // -------------------------------------------------
 
     const mostSellingCourses = allCourses
@@ -214,44 +223,29 @@ exports.categoryPageDetails = async (req, res) => {
       )
       .slice(0, 10);
 
-
     // -------------------------------------------------
-    // 8. Send response
+    // 10. Send response
     // -------------------------------------------------
 
     return res.status(200).json({
-
       success: true,
 
       data: {
-
         selectedCategory,
-
         differentCategory,
-
         mostSellingCourses,
-
       },
-
     });
-
   } catch (error) {
-
     console.error(
       "CATEGORY PAGE DETAILS ERROR:",
       error
     );
 
     return res.status(500).json({
-
       success: false,
-
       message: "Internal server error",
-
       error: error.message,
-
     });
-
   }
-
 };
