@@ -291,11 +291,20 @@ export const fetchInstructorCourses = async (token) => {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("INSTRUCTOR COURSES API RESPONSE............", response)
+console.log(
+  "COURSE_CATEGORIES_API DATA:",
+  JSON.stringify(response?.data, null, 2)
+)
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Instructor Courses")
     }
     result = response?.data?.data
+    result = response?.data?.data
+
+console.log(
+  "FINAL CATEGORY RESULT:",
+  JSON.stringify(result, null, 2)
+)
   } catch (error) {
     console.log("INSTRUCTOR COURSES API ERROR............", error)
     toast.error(error.message)
