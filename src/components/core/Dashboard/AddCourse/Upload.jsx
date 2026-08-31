@@ -18,10 +18,19 @@ export default function Upload({
   editData = null,
 }) {
   const [selectedFile, setSelectedFile] = useState(null)
+const [previewSource, setPreviewSource] = useState(
+  viewData || editData || ""
+)
 
-  const [previewSource, setPreviewSource] = useState(
-    viewData || editData || ""
-  )
+useEffect(() => {
+  if (viewData) {
+    setPreviewSource(viewData)
+  } else if (editData) {
+    setPreviewSource(editData)
+  } else if (!selectedFile) {
+    setPreviewSource("")
+  }
+}, [viewData, editData, selectedFile])
 
   // =====================================================
   // FILE SELECT / DROP
@@ -71,9 +80,11 @@ export default function Upload({
   // =====================================================
   // SET SELECTED FILE IN REACT-HOOK-FORM
   // =====================================================
-  useEffect(() => {
+useEffect(() => {
+  if (selectedFile) {
     setValue(name, selectedFile)
-  }, [selectedFile, name, setValue])
+  }
+}, [selectedFile, name, setValue])
 
   // =====================================================
   // CLEANUP LOCAL VIDEO / IMAGE URL

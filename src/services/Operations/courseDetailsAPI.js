@@ -45,7 +45,7 @@ export const fetchCourseDetails = async (courseId) => {
   //   dispatch(setLoading(true));
   let result = null
   try {
-    const response = await apiConnector("GET", COURSE_DETAILS_API, {
+    const response = await apiConnector("POST", COURSE_DETAILS_API, {
       courseId,
     })
     console.log("COURSE_DETAILS_API API RESPONSE............", response)

@@ -19,9 +19,7 @@ const Catalog = () => {
   const [active, setActive] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // =========================================================
   // GET ALL CATEGORIES
-  // =========================================================
   useEffect(() => {
     const getCategories = async () => {
       try {
@@ -32,15 +30,8 @@ const Catalog = () => {
           categories.CATEGORIES_API
         );
 
-        console.log(
-          "ALL CATEGORIES:",
-          JSON.stringify(res?.data?.data, null, 2)
-        );
-
         const allCategories = res?.data?.data || [];
 
-        // Find category safely
-        // API currently returns "Name", but "name" is also supported
         const selectedCategory = allCategories.find((ct) => {
           const categoryName = ct?.Name || ct?.name;
 
@@ -55,31 +46,16 @@ const Catalog = () => {
           );
         });
 
-        // Category not found
         if (!selectedCategory) {
-          console.log(
-            "CATEGORY NOT FOUND FOR:",
-            catalogName
-          );
-
           setCategoryId("");
           setCatalogPageData(null);
           setLoading(false);
-
           return;
         }
 
-        console.log(
-          "SELECTED CATEGORY:",
-          selectedCategory
-        );
-
         setCategoryId(selectedCategory._id);
       } catch (error) {
-        console.log(
-          "GET CATEGORIES ERROR:",
-          error
-        );
+        console.log("GET CATEGORIES ERROR:", error);
 
         setCategoryId("");
         setCatalogPageData(null);
@@ -92,9 +68,7 @@ const Catalog = () => {
     }
   }, [catalogName]);
 
-  // =========================================================
   // GET CATEGORY PAGE DETAILS
-  // =========================================================
   useEffect(() => {
     const getCategoryDetails = async () => {
       try {
@@ -102,17 +76,11 @@ const Catalog = () => {
 
         const res = await getCatalogPageData(categoryId);
 
-        console.log(
-          "CATALOG PAGE DATA:",
-          JSON.stringify(res, null, 2)
-        );
+        console.log("CATALOG PAGE DATA:", res);
 
         setCatalogPageData(res);
       } catch (error) {
-        console.log(
-          "GET CATEGORY DETAILS ERROR:",
-          error
-        );
+        console.log("GET CATEGORY DETAILS ERROR:", error);
 
         setCatalogPageData(null);
       } finally {
@@ -125,9 +93,7 @@ const Catalog = () => {
     }
   }, [categoryId]);
 
-  // =========================================================
-  // SAFE CATEGORY NAME
-  // =========================================================
+  // SAFE DATA
   const selectedCategory =
     catalogPageData?.data?.selectedCategory;
 
@@ -147,9 +113,6 @@ const Catalog = () => {
     differentCategory?.name ||
     "";
 
-  // =========================================================
-  // SAFE COURSE ARRAYS
-  // =========================================================
   const selectedCourses =
     selectedCategory?.courses ||
     selectedCategory?.course ||
@@ -163,22 +126,22 @@ const Catalog = () => {
   const mostSellingCourses =
     catalogPageData?.data?.mostSellingCourses || [];
 
-  // =========================================================
   // LOADING
-  // =========================================================
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-richblack-900 text-richblack-5">
-        <div className="text-xl font-semibold">
-          Loading...
+      <div className="flex min-h-screen items-center justify-center bg-richblack-900">
+        <div className="flex flex-col items-center gap-4">
+          <div className="spinner"></div>
+
+          <p className="text-lg text-richblack-200">
+            Loading courses...
+          </p>
         </div>
       </div>
     );
   }
 
-  // =========================================================
   // CATEGORY NOT FOUND
-  // =========================================================
   if (!categoryId || !catalogPageData) {
     return (
       <>
@@ -199,234 +162,184 @@ const Catalog = () => {
     );
   }
 
-  // =========================================================
-  // MAIN UI
-  // =========================================================
   return (
     <>
-      {/* =====================================================
-          HERO SECTION
-      ===================================================== */}
-      <div className="box-content bg-richblack-800 px-4">
-        <div
-          className="
-            mx-auto
-            flex
-            min-h-[260px]
-            max-w-maxContentTab
-            flex-col
-            justify-center
-            gap-4
-            lg:max-w-maxContent
-          "
-        >
+      {/* ================= HERO ================= */}
+      <section className="bg-richblack-800">
+        <div className="mx-auto flex min-h-[300px] max-w-maxContent flex-col justify-center px-5 py-12">
+
           {/* Breadcrumb */}
-          <p className="text-sm text-richblack-300">
-            Home / Catalog /
+          <p className="mb-4 text-sm text-richblack-300">
+            
             <span className="ml-1 text-yellow-25">
               {selectedCategoryName}
             </span>
           </p>
 
           {/* Category Name */}
-          <h1 className="text-3xl font-semibold text-richblack-5">
+          <h1 className="text-3xl font-bold text-richblack-5 sm:text-4xl">
             {selectedCategoryName}
           </h1>
 
           {/* Description */}
-          <p className="max-w-[870px] text-richblack-200">
+          <p className="mt-4 max-w-[850px] text-base leading-7 text-richblack-200">
             {selectedCategoryDescription}
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* =====================================================
-          SECTION 1 - COURSES TO GET STARTED
-      ===================================================== */}
-      <div
-        className="
-          mx-auto
-          box-content
-          w-full
-          max-w-maxContentTab
-          px-4
-          py-12
-          lg:max-w-maxContent
-        "
-      >
-        <div className="text-3xl font-semibold text-richblack-5">
-          Courses to get you started
-        </div>
+      {/* ================= MAIN ================= */}
+      <main className="bg-richblack-900">
 
-        {/* Tabs */}
-        <div className="my-4 flex border-b border-richblack-600 text-sm">
-          {/* MOST POPULAR */}
-          <p
-            className={`
-              cursor-pointer
-              px-4
-              py-2
-              ${
-                active === 1
-                  ? "border-b border-yellow-25 text-yellow-25"
-                  : "text-richblack-300"
-              }
-            `}
-            onClick={() => setActive(1)}
-          >
-            Most Popular
-          </p>
+        {/* ================= COURSES TO GET STARTED ================= */}
+        <section className="mx-auto max-w-maxContent px-5 py-12">
 
-          {/* NEW */}
-          <p
-            className={`
-              cursor-pointer
-              px-4
-              py-2
-              ${
-                active === 2
-                  ? "border-b border-yellow-25 text-yellow-25"
-                  : "text-richblack-300"
-              }
-            `}
-            onClick={() => setActive(2)}
-          >
-            New
-          </p>
-        </div>
+          <h2 className="text-3xl font-semibold text-richblack-5">
+            Courses to get you started
+          </h2>
 
-        {/* Courses */}
-        <div className="py-4">
-          {selectedCourses.length > 0 ? (
-            <CourseSlider Courses={selectedCourses} />
-          ) : (
-            <div className="py-10 text-xl font-semibold text-richblack-100">
-              No Course Found
+          {/* Tabs */}
+         <div className="mt-6 flex w-fit border-b border-richblack-600">
+
+  <div
+    onClick={() => setActive(1)}
+    className={`cursor-pointer px-6 py-3 text-sm font-medium transition-all duration-200 ${
+      active === 1
+        ? "border-b-2 border-yellow-25 text-yellow-25"
+        : "text-richblack-300 hover:text-richblack-5"
+    }`}
+  >
+    Most Popular
+  </div>
+
+  <div
+    onClick={() => setActive(2)}
+    className={`cursor-pointer px-6 py-3 text-sm font-medium transition-all duration-200 ${
+      active === 2
+        ? "border-b-2 border-yellow-25 text-yellow-25"
+        : "text-richblack-300 hover:text-richblack-5"
+    }`}
+  >
+    New
+  </div>
+
+</div>
+
+          {/* Course Slider */}
+          <div className="mt-8">
+
+            {selectedCourses.length > 0 ? (
+              <CourseSlider
+                Courses={selectedCourses}
+              />
+            ) : (
+              <div className="rounded-lg border border-richblack-700 bg-richblack-800 py-12 text-center">
+                <p className="text-xl font-semibold text-richblack-100">
+                  No courses found
+                </p>
+
+                <p className="mt-2 text-sm text-richblack-300">
+                  There are no courses available in this category yet.
+                </p>
+              </div>
+            )}
+
+          </div>
+        </section>
+
+        {/* ================= TOP COURSES ================= */}
+        <section className="mx-auto max-w-maxContent px-5 py-12">
+
+          <h2 className="text-3xl font-semibold text-richblack-5">
+            Top Courses
+            {differentCategoryName && (
+              <>
+                {" "}
+                in{" "}
+                <span className="text-yellow-25">
+                  {differentCategoryName}
+                </span>
+              </>
+            )}
+          </h2>
+
+          <div className="mt-8">
+
+            {differentCourses.length > 0 ? (
+              <CourseSlider
+                Courses={differentCourses}
+              />
+            ) : (
+              <div className="rounded-lg border border-richblack-700 bg-richblack-800 py-12 text-center">
+                <p className="text-xl font-semibold text-richblack-100">
+                  No courses found
+                </p>
+              </div>
+            )}
+
+          </div>
+        </section>
+
+        {/* ================= FREQUENTLY BOUGHT ================= */}
+        <section className="mx-auto max-w-maxContent px-5 py-12">
+
+          <h2 className="text-3xl font-semibold text-richblack-5">
+            Frequently Bought
+          </h2>
+
+          <div className="mt-8">
+
+            {mostSellingCourses.length > 0 ? (
+
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                {mostSellingCourses
+                  .slice(0, 6)
+                  .map((course, index) => (
+                    <Course_Card
+                      course={course}
+                      key={course?._id || index}
+                      Height="h-[220px]"
+                    />
+                  ))}
+
+              </div>
+
+            ) : (
+
+              <div className="rounded-lg border border-richblack-700 bg-richblack-800 py-12 text-center">
+
+                <p className="text-xl font-semibold text-richblack-100">
+                  No courses found
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+        </section>
+
+        {/* ================= REVIEWS ================= */}
+        <section className="mx-auto max-w-maxContent px-5 py-12">
+
+          <div className="rounded-xl bg-richblack-800 py-10">
+
+            <h2 className="flex items-center justify-center gap-3 px-4 text-center text-3xl font-semibold text-richblack-5 sm:text-4xl">
+              Reviews from other learners
+              <MdOutlineRateReview className="text-yellow-25" />
+            </h2>
+
+            <div className="mt-8">
+              <ReviewSlider />
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* =====================================================
-          SECTION 2 - TOP COURSES
-      ===================================================== */}
-      <div
-        className="
-          mx-auto
-          box-content
-          w-full
-          max-w-maxContentTab
-          px-4
-          py-12
-          lg:max-w-maxContent
-        "
-      >
-        <div className="text-3xl font-semibold text-richblack-5">
-          Top Courses
-          {differentCategoryName && (
-            <>
-              {" "}
-              in{" "}
-              <span className="text-yellow-25">
-                {differentCategoryName}
-              </span>
-            </>
-          )}
-        </div>
+          </div>
 
-        <div className="py-8">
-          {differentCourses.length > 0 ? (
-            <CourseSlider Courses={differentCourses} />
-          ) : (
-            <div className="py-6 text-xl font-semibold text-richblack-100">
-              No Course Found
-            </div>
-          )}
-        </div>
-      </div>
+        </section>
 
-      {/* =====================================================
-          SECTION 3 - FREQUENTLY BOUGHT
-      ===================================================== */}
-      <div
-        className="
-          mx-auto
-          box-content
-          w-full
-          max-w-maxContentTab
-          px-4
-          py-12
-          lg:max-w-maxContent
-        "
-      >
-        <div className="text-3xl font-semibold text-richblack-5">
-          Frequently Bought
-        </div>
+      </main>
 
-        <div className="py-8">
-          {mostSellingCourses.length > 0 ? (
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-              {mostSellingCourses
-                .slice(0, 6)
-                .map((course, index) => (
-                  <Course_Card
-                    course={course}
-                    key={course?._id || index}
-                    Height="h-[220px]"
-                  />
-                ))}
-            </div>
-          ) : (
-            <div className="py-6 text-xl font-semibold text-richblack-100">
-              No Course Found
-            </div>
-          )}
-        </div>
-
-        {/* =================================================
-            REVIEWS
-        ================================================= */}
-        <div
-          className="
-            relative
-            mx-auto
-            my-20
-            flex
-            w-11/12
-            max-w-maxContent
-            flex-col
-            items-center
-            justify-between
-            gap-8
-            bg-richblack-900
-            text-white
-          "
-        >
-          <h1
-            className="
-              mt-8
-              flex
-              items-center
-              justify-center
-              gap-x-3
-              text-center
-              text-3xl
-              font-semibold
-              lg:text-4xl
-            "
-          >
-            Reviews from other learners
-
-            <MdOutlineRateReview className="text-yellow-25" />
-          </h1>
-
-          <ReviewSlider />
-        </div>
-      </div>
-
-      {/* =====================================================
-          FOOTER
-      ===================================================== */}
       <Footer />
     </>
   );

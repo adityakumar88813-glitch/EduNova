@@ -18,7 +18,13 @@ export default function SubSectionModal({
   add = false,
   view = false,
   edit = false,
-}) {
+ 
+}) 
+    {
+      console.log("SUBSECTION MODAL DATA =>", modalData)
+console.log("VIDEO URL =>", modalData?.videoUrl)
+console.log("VIEW =>", view)
+console.log("EDIT =>", edit)
   const {
     register,
     handleSubmit,
@@ -36,14 +42,13 @@ export default function SubSectionModal({
   const { token } = useSelector((state) => state.auth)
   const { course } = useSelector((state) => state.course)
 
-  useEffect(() => {
-    if (view || edit) {
-      // console.log("modalData", modalData)
-      setValue("lectureTitle", modalData.title)
-      setValue("lectureDesc", modalData.description)
-      setValue("lectureVideo", modalData.videoUrl)
-    }
-  }, [])
+ useEffect(() => {
+  if (view || edit) {
+    setValue("lectureTitle", modalData.title)
+    setValue("lectureDesc", modalData.description)
+    setValue("lectureVideo", modalData.videoUrl)
+  }
+}, [view, edit, modalData, setValue])
 
   // =========================================================
   // GET ACTUAL VIDEO DURATION
@@ -154,7 +159,27 @@ export default function SubSectionModal({
 
     if (result) {
       // console.log("result", result)
+       if (result) {
+  console.log("CREATE SUBSECTION RESULT =>", result)
 
+  console.log(
+    "VIDEO URL FROM RESULT =>",
+    result?.subSection?.[result.subSection.length - 1]?.videoUrl
+  )
+
+  const updatedCourseContent = course.courseContent.map((section) =>
+    section._id === modalData ? result : section
+  )
+
+  const updatedCourse = {
+    ...course,
+    courseContent: updatedCourseContent,
+  }
+
+  console.log("UPDATED COURSE =>", updatedCourse)
+
+  dispatch(setCourse(updatedCourse))
+}
       // update the structure of course
       const updatedCourseContent = course.courseContent.map((section) =>
         section._id === modalData.sectionId ? result : section
