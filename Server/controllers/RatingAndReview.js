@@ -141,17 +141,11 @@ exports.getAverageRating = async (req, res) => {
 // ======================================================
 exports.getAllRating = async (req, res) => {
   try {
-    const allReviews = await RatingAndReview.find({})
-      .sort({ rating: "desc" })
-      .populate({
-        path: "user",
-        select: "firstName lastName email image",
-      })
-      .populate({
-        path: "course",
-        select: "courseName",
-      })
-      .exec();
+    console.log("🔥 GET REVIEWS API CALLED");
+
+    const allReviews = await RatingAndReview.find({});
+
+    console.log("🔥 REVIEWS FROM DB:", allReviews);
 
     return res.status(200).json({
       success: true,
@@ -159,7 +153,7 @@ exports.getAllRating = async (req, res) => {
       data: allReviews,
     });
   } catch (error) {
-    console.log("GET ALL RATING ERROR:", error);
+    console.log("🔥 GET ALL RATING ERROR:", error);
 
     return res.status(500).json({
       success: false,

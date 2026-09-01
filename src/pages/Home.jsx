@@ -213,7 +213,7 @@ const Home = () => {
             <div className="flex w-full flex-col items-start gap-7 lg:w-[42%]">
 
               <div className="text-sm leading-6 text-richblack-600 sm:text-base">
-                The modern StudyNotion dictates its own terms. Today, to be a
+                The modern EduNova dictates its own terms. Today, to be a
                 competitive specialist requires more than professional skills.
               </div>
 

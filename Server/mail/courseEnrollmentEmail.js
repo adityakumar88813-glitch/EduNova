@@ -68,8 +68,8 @@ exports.courseEnrollmentEmail = (courseName, name) => {
 <body>
   <div class="container">
 
-    <a href="https://studynotion-edtech-project.vercel.app">
-      <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo" />
+    <a href="">
+      <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="EduNova Logo" />
     </a>
 
     <div class="message">
@@ -93,14 +93,14 @@ exports.courseEnrollmentEmail = (courseName, name) => {
         and start your learning journey.
       </p>
 
-      <a class="cta" href="https://studynotion-edtech-project.vercel.app/dashboard">
+      <a class="cta" href="https://EduNova-edtech-project.vercel.app/dashboard">
         Go to Dashboard
       </a>
     </div>
 
     <div class="support">
       If you have any questions, feel free to reach us at 
-      <a href="mailto:info@studynotion.com">info@studynotion.com</a>
+      <a href="mailto:info@EduNova.com">info@EduNova.com</a>
     </div>
 
   </div>

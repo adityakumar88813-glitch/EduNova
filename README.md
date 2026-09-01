@@ -65,8 +65,8 @@ EduNova
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/adityakumar88813-glitch/study-notion.git
-cd study-notion
+git clone https://github.com/adityakumar88813-glitch/EduNova.git
+cd EduNova
 ```
 
 ### 2. Install Frontend Dependencies

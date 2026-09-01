@@ -5,31 +5,52 @@ import {
   TiStarOutline,
 } from "react-icons/ti"
 
-function RatingStars({ Review_Count, Star_Size }) {
-  const [starCount, SetStarCount] = useState({
-    full: 0,
-    half: 0,
-    empty: 0,
-  })
+function RatingStars({
+  Review_Count = 0,
+  Star_Size = 20,
+  editable = false,
+  onRatingChange,
+}) {
+  const [rating, setRating] = useState(Review_Count || 0)
 
   useEffect(() => {
-    const wholeStars = Math.floor(Review_Count) || 0
-    SetStarCount({
-      full: wholeStars,
-      half: Number.isInteger(Review_Count) ? 0 : 1,
-      empty: Number.isInteger(Review_Count) ? 5 - wholeStars : 4 - wholeStars,
-    })
+    setRating(Review_Count || 0)
   }, [Review_Count])
+
+  const handleClick = (value) => {
+    if (!editable) return
+
+    setRating(value)
+
+    if (onRatingChange) {
+      onRatingChange(value)
+    }
+  }
+
   return (
-    <div className="flex gap-1 text-yellow-100">
-      {[...new Array(starCount.full)].map((_, i) => {
-        return <TiStarFullOutline key={i} size={Star_Size || 20} />
-      })}
-      {[...new Array(starCount.half)].map((_, i) => {
-        return <TiStarHalfOutline key={i} size={Star_Size || 20} />
-      })}
-      {[...new Array(starCount.empty)].map((_, i) => {
-        return <TiStarOutline key={i} size={Star_Size || 20} />
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map((star) => {
+        return (
+          <button
+            key={star}
+            type="button"
+            onClick={() => handleClick(star)}
+            disabled={!editable}
+            className={editable ? "cursor-pointer" : "cursor-default"}
+          >
+            {rating >= star ? (
+              <TiStarFullOutline
+                size={Star_Size}
+                className="text-yellow-50"
+              />
+            ) : (
+              <TiStarOutline
+                size={Star_Size}
+                className="text-yellow-50"
+              />
+            )}
+          </button>
+        )
       })}
     </div>
   )

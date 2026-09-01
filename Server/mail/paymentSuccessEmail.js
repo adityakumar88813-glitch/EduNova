@@ -68,8 +68,8 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
       
       <body>
           <div class="container">
-              <a href="https://studynotion-by-vivek.vercel.app/"><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png"
-                      alt="StudyNotion Logo"></a>
+              <a href=""><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png"
+                      alt="EduNova Logo"></a>
               <div class="message">Course Payment Confirmation</div>
               <div class="body">
                   <p>Dear ${name},</p>
@@ -78,7 +78,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
                   <p>Your Order ID is <b>${orderId}</b></p>
               </div>
               <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-                      href="mailto:mailbystudynotion@gmail.com">mailbystudynotion@gmail.com</a>. We are here to help!</div>
+                      href="mailto:mailbyEduNova@gmail.com">mailbyEduNova@gmail.com</a>. We are here to help!</div>
           </div>
       </body>
       

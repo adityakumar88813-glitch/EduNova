@@ -413,12 +413,14 @@ exports.getFullCourseDetails = async (req, res) => {
           : [],
       },
     })
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    })
-  }
+ } catch (error) {
+  console.log("🔥 GET FULL COURSE DETAILS ERROR:", error);
+
+  return res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+}
 }
 
 // Get a list of Course for a given Instructor

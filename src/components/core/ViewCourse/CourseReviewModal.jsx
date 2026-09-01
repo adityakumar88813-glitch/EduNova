@@ -2,7 +2,10 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { RxCross2 } from "react-icons/rx"
 import { FiStar, FiSend } from "react-icons/fi"
-import ReactStars from "react-rating-stars-component"
+import {
+  TiStarFullOutline,
+  TiStarOutline,
+} from "react-icons/ti"
 import { useSelector } from "react-redux"
 
 import { createRating } from "../../../services/operations/courseDetailsAPI"
@@ -11,6 +14,7 @@ import IconBtn from "../../common/IconBtn"
 export default function CourseReviewModal({ setReviewModal }) {
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
+
   const { courseEntireData } = useSelector(
     (state) => state.viewCourse
   )
@@ -20,49 +24,81 @@ export default function CourseReviewModal({ setReviewModal }) {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
-  } = useForm()
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      courseExperience: "",
+      courseRating: 0,
+    },
+  })
 
   const courseRating = watch("courseRating")
 
-  // =========================================================
-  // INITIAL VALUES
-  // =========================================================
+  // --------------------------------------------------
+  // INITIAL VALUE
+  // --------------------------------------------------
 
   useEffect(() => {
     setValue("courseExperience", "")
     setValue("courseRating", 0)
   }, [setValue])
 
-  // =========================================================
-  // RATING
-  // =========================================================
+  // --------------------------------------------------
+  // RATING CHANGE
+  // --------------------------------------------------
 
   const ratingChanged = (newRating) => {
     setValue("courseRating", newRating, {
       shouldValidate: true,
+      shouldDirty: true,
     })
   }
 
-  // =========================================================
-  // SUBMIT
-  // =========================================================
+  // --------------------------------------------------
+  // SUBMIT REVIEW
+  // --------------------------------------------------
 
   const onSubmit = async (data) => {
     if (!courseEntireData?._id) {
+      console.error("Course ID not found")
       return
     }
 
-    await createRating(
-      {
-        courseId: courseEntireData._id,
-        rating: data.courseRating,
-        review: data.courseExperience,
-      },
-      token
-    )
+    try {
+      await createRating(
+        {
+          courseId: courseEntireData._id,
+          rating: Number(data.courseRating),
+          review: data.courseExperience,
+        },
+        token
+      )
 
-    setReviewModal(false)
+      setReviewModal(false)
+    } catch (error) {
+      console.error("CREATE REVIEW ERROR:", error)
+    }
+  }
+
+  // --------------------------------------------------
+  // STAR LABEL
+  // --------------------------------------------------
+
+  const getRatingText = () => {
+    switch (courseRating) {
+      case 1:
+        return "Poor"
+      case 2:
+        return "Below Average"
+      case 3:
+        return "Good"
+      case 4:
+        return "Very Good"
+      case 5:
+        return "Excellent!"
+      default:
+        return "Select your rating"
+    }
   }
 
   return (
@@ -71,30 +107,28 @@ export default function CourseReviewModal({ setReviewModal }) {
         fixed inset-0 z-[1000]
         flex min-h-screen items-center justify-center
         overflow-y-auto
-        bg-black/60
+        bg-black/70
         px-4 py-8
         backdrop-blur-md
       "
       onClick={() => setReviewModal(false)}
     >
-
-      {/* =====================================================
+      {/* =================================================
           MODAL
-      ===================================================== */}
+      ================================================= */}
 
       <div
         className="
           relative
-          w-full max-w-[560px]
+          w-full max-w-[580px]
           overflow-hidden
           rounded-2xl
           border border-richblack-600
           bg-richblack-800
-          shadow-[0_25px_80px_rgba(0,0,0,0.5)]
+          shadow-[0_25px_100px_rgba(0,0,0,0.6)]
         "
         onClick={(e) => e.stopPropagation()}
       >
-
         {/* =================================================
             TOP ACCENT
         ================================================= */}
@@ -105,23 +139,41 @@ export default function CourseReviewModal({ setReviewModal }) {
             HEADER
         ================================================= */}
 
-        <div className="flex items-center justify-between border-b border-richblack-600 bg-richblack-800 px-6 py-5">
-
+        <div
+          className="
+            flex items-center justify-between
+            border-b border-richblack-600
+            bg-richblack-800
+            px-6 py-5
+          "
+        >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-yellow-50">
-              Course Feedback
-            </p>
+            <div className="flex items-center gap-2">
+              <FiStar className="text-yellow-50" />
+
+              <p
+                className="
+                  text-xs font-semibold
+                  uppercase tracking-[0.18em]
+                  text-yellow-50
+                "
+              >
+                Course Feedback
+              </p>
+            </div>
 
             <h2 className="mt-1 text-xl font-bold text-richblack-5">
               Add Review
             </h2>
           </div>
 
+          {/* Close Button */}
+
           <button
             type="button"
             onClick={() => setReviewModal(false)}
             className="
-              flex h-9 w-9
+              flex h-10 w-10
               items-center justify-center
               rounded-lg
               border border-richblack-600
@@ -143,19 +195,19 @@ export default function CourseReviewModal({ setReviewModal }) {
         ================================================= */}
 
         <div className="px-6 py-7">
-
           {/* =================================================
               USER PROFILE
           ================================================= */}
 
-          <div className="
-            flex items-center gap-4
-            rounded-xl
-            border border-richblack-600
-            bg-richblack-900/50
-            p-4
-          ">
-
+          <div
+            className="
+              flex items-center gap-4
+              rounded-xl
+              border border-richblack-600
+              bg-richblack-900/50
+              p-4
+            "
+          >
             <img
               src={user?.image}
               alt={`${user?.firstName || "User"} profile`}
@@ -186,17 +238,19 @@ export default function CourseReviewModal({ setReviewModal }) {
             onSubmit={handleSubmit(onSubmit)}
             className="mt-7"
           >
-
             {/* =================================================
                 RATING
             ================================================= */}
 
-            <div className="
-              rounded-xl
-              border border-richblack-600
-              bg-richblack-900/40
-              p-5
-            ">
+            <div
+              className="
+                rounded-xl
+                border border-richblack-600
+                bg-richblack-900/40
+                p-5
+              "
+            >
+              {/* Heading */}
 
               <div className="flex items-center gap-2">
                 <FiStar className="text-yellow-50" />
@@ -206,26 +260,74 @@ export default function CourseReviewModal({ setReviewModal }) {
                 </p>
               </div>
 
-              <div className="mt-4 flex flex-col items-center">
+              {/* Stars */}
 
-                <ReactStars
-                  count={5}
-                  value={courseRating || 0}
-                  onChange={ratingChanged}
-                  size={34}
-                  activeColor="#ffd700"
-                  color="#4b5563"
-                  isHalf={false}
-                />
+              <div className="mt-5 flex flex-col items-center">
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => ratingChanged(star)}
+                      className="
+                        rounded-md
+                        p-1
+                        transition-all duration-200
+                        hover:scale-110
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-yellow-50/50
+                      "
+                      aria-label={`Rate ${star} out of 5`}
+                    >
+                      {courseRating >= star ? (
+                        <TiStarFullOutline
+                          size={38}
+                          className="
+                            text-yellow-50
+                            drop-shadow-[0_0_8px_rgba(255,214,10,0.35)]
+                          "
+                        />
+                      ) : (
+                        <TiStarOutline
+                          size={38}
+                          className="
+                            text-richblack-300
+                            transition-colors duration-200
+                            hover:text-yellow-50
+                          "
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
 
-                <p className="mt-2 text-xs text-richblack-400">
-                  {courseRating
-                    ? `${courseRating} out of 5 stars`
-                    : "Select your rating"}
-                </p>
+                {/* Rating Text */}
+
+                <div className="mt-3 text-center">
+                  <p
+                    className={`
+                      text-sm font-semibold
+                      ${
+                        courseRating
+                          ? "text-yellow-50"
+                          : "text-richblack-400"
+                      }
+                    `}
+                  >
+                    {getRatingText()}
+                  </p>
+
+                  <p className="mt-1 text-xs text-richblack-400">
+                    {courseRating
+                      ? `${courseRating} out of 5 stars`
+                      : "Click a star to rate this course"}
+                  </p>
+                </div>
               </div>
 
-              {/* Hidden rating validation */}
+              {/* Hidden Rating Field */}
+
               <input
                 type="hidden"
                 {...register("courseRating", {
@@ -235,8 +337,10 @@ export default function CourseReviewModal({ setReviewModal }) {
                 })}
               />
 
+              {/* Rating Error */}
+
               {errors.courseRating && (
-                <p className="mt-2 text-center text-xs text-pink-200">
+                <p className="mt-3 text-center text-xs text-pink-200">
                   {errors.courseRating.message}
                 </p>
               )}
@@ -247,7 +351,6 @@ export default function CourseReviewModal({ setReviewModal }) {
             ================================================= */}
 
             <div className="mt-5">
-
               <label
                 htmlFor="courseExperience"
                 className="
@@ -293,31 +396,36 @@ export default function CourseReviewModal({ setReviewModal }) {
                 "
               />
 
-              {errors.courseExperience && (
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-pink-200" />
+              {/* Character hint */}
 
-                  <span className="text-xs text-pink-200">
+              <div className="mt-2 flex items-center justify-between">
+                <p className="text-xs text-richblack-500">
+                  Minimum 5 characters
+                </p>
+
+                {errors.courseExperience && (
+                  <p className="text-xs text-pink-200">
                     {errors.courseExperience.message}
-                  </span>
-                </div>
-              )}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* =================================================
                 BUTTONS
             ================================================= */}
 
-            <div className="
-              mt-7
-              flex
-              flex-col-reverse
-              gap-3
-              sm:flex-row
-              sm:justify-end
-            ">
-
+            <div
+              className="
+                mt-7
+                flex flex-col-reverse
+                gap-3
+                sm:flex-row
+                sm:justify-end
+              "
+            >
               {/* Cancel */}
+
               <button
                 type="button"
                 onClick={() => setReviewModal(false)}
@@ -328,7 +436,7 @@ export default function CourseReviewModal({ setReviewModal }) {
                   rounded-xl
                   border border-richblack-600
                   bg-richblack-700
-                  px-5 py-2.5
+                  px-5 py-3
                   text-sm font-semibold
                   text-richblack-200
                   transition-all duration-200
@@ -341,22 +449,28 @@ export default function CourseReviewModal({ setReviewModal }) {
               </button>
 
               {/* Save */}
+
               <IconBtn
-                text="Save Review"
+                type="submit"
+                disabled={isSubmitting}
+                text={
+                  isSubmitting
+                    ? "Saving..."
+                    : "Save Review"
+                }
                 customClasses="
                   flex
                   items-center
                   justify-center
                   gap-2
                   rounded-xl
-                  px-5
-                  py-2.5
+                  px-6
+                  py-3
                   text-sm
                   font-semibold
                 "
               />
             </div>
-
           </form>
         </div>
 
@@ -364,19 +478,23 @@ export default function CourseReviewModal({ setReviewModal }) {
             FOOTER
         ================================================= */}
 
-        <div className="
-          flex items-center justify-center
-          gap-2
-          border-t border-richblack-700
-          bg-richblack-900/40
-          px-6 py-3
-          text-[10px]
-          text-richblack-500
-        ">
+        <div
+          className="
+            flex items-center justify-center
+            gap-2
+            border-t border-richblack-700
+            bg-richblack-900/40
+            px-6 py-3
+            text-[10px]
+            text-richblack-500
+          "
+        >
           <FiSend />
-          Your feedback helps other students choose better courses
-        </div>
 
+          <span>
+            Your feedback helps other students choose better courses
+          </span>
+        </div>
       </div>
     </div>
   )

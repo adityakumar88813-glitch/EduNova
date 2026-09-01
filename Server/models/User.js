@@ -32,11 +32,11 @@ const userSchema = new mongoose.Schema({
         ref:"Profile",
     },
     courses:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Courses"
-        }
-    ],
+    {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Course"
+    }
+],
     image:{
         type:String,
         required:true,
