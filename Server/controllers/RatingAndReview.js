@@ -143,7 +143,16 @@ exports.getAllRating = async (req, res) => {
   try {
     console.log("🔥 GET REVIEWS API CALLED");
 
-    const allReviews = await RatingAndReview.find({});
+    const allReviews = await RatingAndReview.find({})
+      .populate({
+        path: "user",
+        select: "firstName lastName image",
+      })
+      .populate({
+        path: "course",
+        select: "courseName",
+      })
+      .sort({ createdAt: -1 });
 
     console.log("🔥 REVIEWS FROM DB:", allReviews);
 

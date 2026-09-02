@@ -7,11 +7,13 @@ const Course_Card = ({ course, Height = "h-[215px]" }) => {
   const [avgReviewCount, setAvgReviewCount] = useState(0);
 
   useEffect(() => {
-    const reviews = course?.ratingAndReviews || [];
+    const reviews = Array.isArray(course?.ratingAndReviews)
+      ? course.ratingAndReviews
+      : [];
 
     if (reviews.length > 0) {
       const count = GetAvgRating(reviews);
-      setAvgReviewCount(count);
+      setAvgReviewCount(Number(count) || 0);
     } else {
       setAvgReviewCount(0);
     }
@@ -21,9 +23,13 @@ const Course_Card = ({ course, Height = "h-[215px]" }) => {
     return null;
   }
 
+  const reviewCount = Array.isArray(course?.ratingAndReviews)
+    ? course.ratingAndReviews.length
+    : 0;
+
   return (
     <Link
-      to={`/courses/${course?._id}`}
+      to={`/courses/${course._id}`}
       className="group block h-full"
     >
       <div className="h-full overflow-hidden rounded-xl bg-richblack-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
@@ -64,7 +70,7 @@ const Course_Card = ({ course, Height = "h-[215px]" }) => {
             />
 
             <span className="text-xs text-richblack-400">
-              ({course?.ratingAndReviews?.length || 0} Ratings)
+              ({reviewCount} Ratings)
             </span>
 
           </div>

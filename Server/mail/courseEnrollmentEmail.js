@@ -69,7 +69,7 @@ exports.courseEnrollmentEmail = (courseName, name) => {
   <div class="container">
 
     <a href="">
-      <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="EduNova Logo" />
+      <img class="logo" src="https://res.cloudinary.com/dnyovtdwv/image/upload/v1788335124/EduNovaLogo_cfnan2.png" alt="EduNova Logo" />
     </a>
 
     <div class="message">

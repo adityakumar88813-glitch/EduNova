@@ -68,7 +68,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
       
       <body>
           <div class="container">
-              <a href=""><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png"
+              <a href=""><img class="logo" src="https://res.cloudinary.com/dnyovtdwv/image/upload/v1788335124/EduNovaLogo_cfnan2.png"
                       alt="EduNova Logo"></a>
               <div class="message">Course Payment Confirmation</div>
               <div class="body">

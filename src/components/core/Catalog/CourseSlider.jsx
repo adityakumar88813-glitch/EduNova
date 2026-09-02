@@ -59,4 +59,4 @@ const CourseSlider = ({ Courses = [] }) => {
   );
 };
 
-export default CourseSlider;cou
+export default CourseSlider;

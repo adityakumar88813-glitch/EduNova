@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { RxCross2 } from "react-icons/rx"
 import { FiStar, FiSend } from "react-icons/fi"
@@ -12,6 +13,8 @@ import { createRating } from "../../../services/operations/courseDetailsAPI"
 import IconBtn from "../../common/IconBtn"
 
 export default function CourseReviewModal({ setReviewModal }) {
+  const { courseId } = useParams()
+
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
 
@@ -59,27 +62,30 @@ export default function CourseReviewModal({ setReviewModal }) {
   // --------------------------------------------------
 
   const onSubmit = async (data) => {
-    if (!courseEntireData?._id) {
-      console.error("Course ID not found")
-      return
-    }
+  const finalCourseId = courseId || courseEntireData?._id
 
-    try {
-      await createRating(
-        {
-          courseId: courseEntireData._id,
-          rating: Number(data.courseRating),
-          review: data.courseExperience,
-        },
-        token
-      )
+  console.log("COURSE ID =>", finalCourseId)
 
-      setReviewModal(false)
-    } catch (error) {
-      console.error("CREATE REVIEW ERROR:", error)
-    }
+  if (!finalCourseId) {
+    console.error("Course ID not found")
+    return
   }
 
+  try {
+    await createRating(
+      {
+        courseId: finalCourseId,
+        rating: Number(data.courseRating),
+        review: data.courseExperience,
+      },
+      token
+    )
+
+    setReviewModal(false)
+  } catch (error) {
+    console.error("CREATE REVIEW ERROR:", error)
+  }
+}
   // --------------------------------------------------
   // STAR LABEL
   // --------------------------------------------------
@@ -474,7 +480,7 @@ export default function CourseReviewModal({ setReviewModal }) {
           </form>
         </div>
 
-        {/* =================================================
+        {/*
             FOOTER
         ================================================= */}
 
