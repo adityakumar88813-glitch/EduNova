@@ -148,6 +148,10 @@ const Catalog = () => {
     return dateB - dateA;
   });
 
+  // =========================================================
+  // DISPLAYED COURSES
+  // =========================================================
+
   const displayedCourses =
     active === 1 ? selectedCourses : newCourses;
 
@@ -248,6 +252,7 @@ const Catalog = () => {
             {/* Stats */}
             <div className="mt-8 flex flex-wrap gap-4">
 
+              {/* Courses */}
               <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-900/70 px-5 py-3 backdrop-blur-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-400">
                   <FaBookOpen />
@@ -264,6 +269,7 @@ const Catalog = () => {
                 </div>
               </div>
 
+              {/* Practical Learning */}
               <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-900/70 px-5 py-3 backdrop-blur-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-400/10 text-blue-400">
                   <FaCode />
@@ -280,6 +286,7 @@ const Catalog = () => {
                 </div>
               </div>
 
+              {/* Beginner Friendly */}
               <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-900/70 px-5 py-3 backdrop-blur-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-400/10 text-green-400">
                   <FaGraduationCap />
@@ -366,7 +373,6 @@ const Catalog = () => {
           </div>
 
           {/* Course Slider */}
-
           <div>
 
             {displayedCourses.length > 0 ? (
@@ -375,6 +381,7 @@ const Catalog = () => {
               />
             ) : (
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 py-16 text-center">
+
                 <FaBookOpen className="mx-auto text-4xl text-slate-600" />
 
                 <p className="mt-4 text-xl font-semibold text-white">
@@ -384,6 +391,7 @@ const Catalog = () => {
                 <p className="mt-2 text-sm text-slate-400">
                   There are no courses available in this category yet.
                 </p>
+
               </div>
             )}
 
@@ -406,6 +414,7 @@ const Catalog = () => {
 
               <h2 className="text-3xl font-bold text-white sm:text-4xl">
                 Top Courses
+
                 {differentCategoryName && (
                   <>
                     {" "}
@@ -424,21 +433,24 @@ const Catalog = () => {
             </div>
 
             <div>
+
               {differentCourses.length > 0 ? (
                 <CourseSlider
                   Courses={differentCourses}
                 />
               ) : (
                 <div className="rounded-2xl border border-slate-800 bg-slate-900/60 py-16 text-center">
+
                   <p className="text-xl font-semibold text-white">
                     No courses found
                   </p>
+
                 </div>
               )}
+
             </div>
 
           </div>
-
         </section>
 
         {/* ===================================================
@@ -493,7 +505,6 @@ const Catalog = () => {
             )}
 
           </div>
-
         </section>
 
         {/* ===================================================
