@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import {
   TiStarFullOutline,
-  TiStarHalfOutline,
   TiStarOutline,
 } from "react-icons/ti"
 
@@ -11,10 +10,10 @@ function RatingStars({
   editable = false,
   onRatingChange,
 }) {
-  const [rating, setRating] = useState(Review_Count || 0)
+  const [rating, setRating] = useState(Number(Review_Count) || 0)
 
   useEffect(() => {
-    setRating(Review_Count || 0)
+    setRating(Number(Review_Count) || 0)
   }, [Review_Count])
 
   const handleClick = (value) => {
@@ -28,28 +27,71 @@ function RatingStars({
   }
 
   return (
-    <div className="flex gap-1">
+    <div
+      className="
+        flex
+        h-[20px]
+        shrink-0
+        items-center
+        gap-0
+        overflow-hidden
+        leading-none
+      "
+    >
       {[1, 2, 3, 4, 5].map((star) => {
+        const StarIcon =
+          rating >= star
+            ? TiStarFullOutline
+            : TiStarOutline
+
+        if (editable) {
+          return (
+            <button
+              key={star}
+              type="button"
+              onClick={() => handleClick(star)}
+              className="
+                m-0
+                flex
+                h-[20px]
+                w-[20px]
+                shrink-0
+                items-center
+                justify-center
+                border-0
+                bg-transparent
+                p-0
+                leading-none
+                cursor-pointer
+              "
+            >
+              <StarIcon
+                size={Star_Size}
+                className="text-yellow-50"
+              />
+            </button>
+          )
+        }
+
         return (
-          <button
+          <span
             key={star}
-            type="button"
-            onClick={() => handleClick(star)}
-            disabled={!editable}
-            className={editable ? "cursor-pointer" : "cursor-default"}
+            className="
+              m-0
+              flex
+              h-[20px]
+              w-[20px]
+              shrink-0
+              items-center
+              justify-center
+              leading-none
+            "
           >
-            {rating >= star ? (
-              <TiStarFullOutline
-                size={Star_Size}
-                className="text-yellow-50"
-              />
-            ) : (
-              <TiStarOutline
-                size={Star_Size}
-                className="text-yellow-50"
-              />
-            )}
-          </button>
+            <StarIcon
+              size={Star_Size}
+              className="text-yellow-50"
+            />
+          </span>
         )
       })}
     </div>

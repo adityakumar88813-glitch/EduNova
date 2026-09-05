@@ -145,30 +145,47 @@ const enrollStudents = async(courses, userId, res) => {
 
 }
 
-exports.sendPaymentSuccessEmail = async(req, res) => {
-    const {orderId, paymentId, amount} = req.body;
+exports.sendPaymentSuccessEmail = async (req, res) => {
+    const { orderId, paymentId, amount } = req.body;
 
     const userId = req.user.id;
 
-    if(!orderId || !paymentId || !amount || !userId) {
-        return res.status(400).json({success:false, message:"Please provide all the fields"});
+    if (!orderId || !paymentId || !amount || !userId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide all the fields"
+        });
     }
 
-    try{
-        //student ko dhundo
+    try {
         const enrolledStudent = await User.findById(userId);
+
         await mailSender(
             enrolledStudent.email,
-            `Payment Recieved`,
-             paymentSuccessEmail(`${enrolledStudent.firstName}`,
-             amount/100,orderId, paymentId)
-        )
+            `Payment Received`,
+            paymentSuccessEmail(
+                `${enrolledStudent.firstName}`,
+                amount / 100,
+                orderId,
+                paymentId
+            )
+        );
+
+        // 👇 ADD THIS
+        return res.status(200).json({
+            success: true,
+            message: "Payment success email sent"
+        });
+
+    } catch (error) {
+        console.log("error in sending mail", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Could not send email"
+        });
     }
-    catch(error) {
-        console.log("error in sending mail", error)
-        return res.status(500).json({success:false, message:"Could not send email"})
-    }
-}
+};
 
 
 // //capture the payment and initiate the Razorpay order

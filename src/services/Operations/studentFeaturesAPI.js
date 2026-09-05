@@ -2,7 +2,6 @@
 import { toast } from "react-hot-toast";
 import { studentEndpoints } from "../apis";
 import { apiConnector } from "../apiconnector";
-import rzpLogo from "../../assets/rzp_logo.png"
 import { setPaymentLoading } from "../../slices/courseSlice";
 import { resetCart } from "../../slices/cartSlice";
 
@@ -55,7 +54,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             order_id:orderResponse.data.message.id,
             name:"EduNova",
             description: "Thank You for Purchasing the Course",
-            image:rzpLogo,
+            image: "https://res.cloudinary.com/dnyovtdwv/image/upload/v1788335124/EduNovaLogo_cfnan2.png",
             prefill: {
                 name:`${userDetails.firstName}`,
                 email:userDetails.email

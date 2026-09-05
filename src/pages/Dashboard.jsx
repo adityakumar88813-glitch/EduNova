@@ -1,31 +1,48 @@
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 
-import { useSelector } from "react-redux"
-import { Outlet } from "react-router-dom"
-
-import Sidebar from "../components/core/Dashboard/Sidebar"
+import Sidebar from "../components/core/Dashboard/Sidebar";
 
 function Dashboard() {
-  const { loading: profileLoading } = useSelector((state) => state.profile)
-  const { loading: authLoading } = useSelector((state) => state.auth)
+  const { loading: profileLoading } = useSelector(
+    (state) => state.profile
+  );
+
+  const { loading: authLoading } = useSelector(
+    (state) => state.auth
+  );
 
   if (profileLoading || authLoading) {
     return (
-      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-        <div className="spinner"></div>
+      <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-richblack-900">
+        <div className="flex flex-col items-center gap-4">
+          <div className="spinner"></div>
+          <p className="text-sm text-richblack-300">
+            Loading dashboard...
+          </p>
+        </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="relative flex min-h-[calc(100vh-3.5rem)]">
+    <div className="flex min-h-[calc(100vh-3.5rem)] bg-richblack-900">
+
+      {/* ================= SIDEBAR ================= */}
       <Sidebar />
-      <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
-        <div className="mx-auto w-11/12 max-w-[1000px] py-10">
+
+      {/* ================= MAIN CONTENT ================= */}
+      <main className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto">
+
+        <div className="w-full px-5 py-8 sm:px-8 lg:px-10 xl:px-12">
+
           <Outlet />
+
         </div>
-      </div>
+
+      </main>
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

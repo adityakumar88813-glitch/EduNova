@@ -104,32 +104,28 @@ function ReviewSlider() {
                 : reviewText
 
             return (
-              <SwiperSlide key={review?._id || index}>
-
-                {/* ==============================
-                    CARD
-                =============================== */}
-
-                <div
-                  className="
-                    group relative
-                    min-h-[260px]
-                    overflow-hidden
-                    rounded-2xl
-                    border border-richblack-700
-                    bg-gradient-to-br
-                    from-richblack-800
-                    via-richblack-800
-                    to-richblack-900
-                    p-5
-                    shadow-[0_10px_35px_rgba(0,0,0,0.25)]
-                    transition-all
-                    duration-300
-                    hover:-translate-y-2
-                    hover:border-yellow-100/40
-                    hover:shadow-[0_20px_45px_rgba(0,0,0,0.45)]
-                  "
-                >
+             <SwiperSlide key={review?._id || index} className="!h-[310px]">
+  <div
+    className="
+      group relative
+      h-[310px]
+      w-full
+      overflow-hidden
+      rounded-2xl
+      border border-richblack-700
+      bg-gradient-to-br
+      from-richblack-800
+      via-richblack-800
+      to-richblack-900
+      p-5
+      shadow-[0_10px_35px_rgba(0,0,0,0.25)]
+      transition-all
+      duration-300
+      hover:-translate-y-2
+      hover:border-yellow-100/40
+      hover:shadow-[0_20px_45px_rgba(0,0,0,0.45)]
+    "
+  >
 
                   {/* Glow Effect */}
 
