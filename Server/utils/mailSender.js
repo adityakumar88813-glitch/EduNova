@@ -11,7 +11,8 @@ const mailSender = async (email, title, body) => {
         pass: process.env.MAIL_PASS,
       },
     });
-
+      console.log("BODY TYPE:", typeof body);
+      console.log("BODY START:", body.substring(0, 100));
     const info = await transporter.sendMail({
       from: `"EduNova" <${process.env.MAIL_USER}>`,
       to: email,

@@ -1,6 +1,6 @@
-
 exports.passwordUpdated = (email, name) => {
-  return `<!DOCTYPE html>
+  return `
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -35,7 +35,7 @@ exports.passwordUpdated = (email, name) => {
       margin-bottom: 20px;
     }
 
-    .body {
+    .email-body {
       font-size: 16px;
       margin-bottom: 20px;
     }
@@ -53,33 +53,49 @@ exports.passwordUpdated = (email, name) => {
 </head>
 
 <body>
+
   <div class="container">
 
-    <a href="https://EduNova-edtech-project.vercel.app">
-      <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="EduNova Logo" />
-    </a>
+<a href="https://res.cloudinary.com/dnyovtdwv/image/upload/v1788335124/EduNovaLogo_cfnan2.png">
+    <img
+        class="logo"
+        src="https://res.cloudinary.com/dnyovtdwv/image/upload/v1788335124/EduNovaLogo_cfnan2.png"
+        alt="EduNova Logo"
+    />
+</a>
 
     <div class="message">
       Password Update Confirmation
     </div>
 
-    <div class="body">
+    <div class="email-body">
+
       <p>Hey ${name},</p>
 
-      <p>Your password has been successfully updated for the email 
+      <p>
+        Your password has been successfully updated for the email
         <span class="highlight">${email}</span>.
       </p>
 
-      <p>If you did not request this password change, please contact us immediately to secure your account.</p>
+      <p>
+        If you did not request this password change,
+        please contact us immediately to secure your account.
+      </p>
+
     </div>
 
     <div class="support">
-      If you have any questions, feel free to reach us at 
-      <a href="mailto:info@EduNova.com">info@EduNova.com</a>
+
+      If you have any questions, feel free to reach us at
+      <a href="mailto:info@EduNova.com">
+        info@EduNova.com
+      </a>
+
     </div>
 
   </div>
-</body>
 
-</html>`;
+</body>
+</html>
+`;
 };

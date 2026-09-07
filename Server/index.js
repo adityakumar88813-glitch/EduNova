@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+//routes import
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
 const paymentRoutes = require("./routes/Payment");
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 4000;
 
 //database connect
 database.connect();
+
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
